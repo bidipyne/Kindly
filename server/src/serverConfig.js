@@ -1,9 +1,13 @@
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from "mongoose";
 
 import Route from './routes/index.js';
-import { MONGO_DB_URL } from './config/constants.js';
+
+dotenv.config();
+
+const MONGO_DB_URL = process.env.MONGO_DB_URL;
 
 export default class ServerConfig {
   constructor(app) {

@@ -4,3 +4,7 @@
 # Ignore node_modules in the two subfolders
 /client/node_modules
 /server/node_modules
+
+# Ignore the env variables
+/client/.env
+/server/.env
