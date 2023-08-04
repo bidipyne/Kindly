@@ -1,6 +1,7 @@
 import UserRoute from './user.route.js';
 // import AuthRoute from './auth.route.js'
 import AuthController from '../controllers/auth.controller.js';
+import upload from '../utils/upload.js';
 
 export default class Route {
   userRoute = new UserRoute();
@@ -25,6 +26,7 @@ export default class Route {
   configBaseRoute(app) {
     app.get("/", this.homeRouteHandler);
     app.post("/login", AuthController.login);
+    app.post("/sign-up", upload.single('profileImage'), AuthController.signup);
     app.use("/users", this.userRoute.router);
     app.use(this.noRouteHandler);
   }

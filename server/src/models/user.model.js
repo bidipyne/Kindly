@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 
-import { saltRounds } from "../config/constants";
+import { saltRounds } from "../config/constants.js";
 
 const userSchema = new mongoose.Schema({
-  fullname: {
+  username: {
     type: String,
-    required: true
+    // required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
+  userType: {
     type: String,
     enum: ['organization', 'volunteer'],
     required: true,
