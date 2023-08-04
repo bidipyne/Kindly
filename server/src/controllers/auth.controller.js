@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import UserModel from '../models/user.model.js';
 import volunteerModel from '../models/volunteer.model.js';
 import organizationModel from '../models/organization.model.js';
@@ -7,23 +8,38 @@ class AuthController {
   constructor() { }
 
   static async signup(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-      let { email, password, userType } = req.body;
-      let { name, charityNumber, province, city, about, address, contactInfo, website, fullName } = req.body;
-      let profileImage = req.file?.path;
-
-      if (userType !== ORGANIZATION && userType !== VOLUNTEER) {
-        return res.status(400).send({ message: 'Please provide a valid user type.' });
-      }
-
-      let userData = {
+      let {
         email,
         password,
         userType,
-      };
+        name,
+        charityNumber,
+        province,
+        city,
+        about,
+        address,
+        contactInfo,
+        website,
+        fullName
+      } = req.body;
 
-      const user = new UserModel(userData);
-      await user.save();
+      let profileImage = req.file?.path;
+
+      const validUserTypes = [ORGANIZATION, VOLUNTEER];
+      if (!validUserTypes.includes(userType)) {
+        return res.status(400).send({ message: 'Please provide a valid user type.' });
+      }
+
+      const user = new UserModel({
+        email,
+        password,
+        userType,
+      });
+      await user.save({ session });
 
       if (req.body.userType === ORGANIZATION) {
         let organizationData = {
@@ -43,7 +59,10 @@ class AuthController {
           ...organizationData
         });
 
-        await organization.save();
+        await organization.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
 
         return res.status(200).send({
           message: 'Organization created!',
@@ -68,7 +87,10 @@ class AuthController {
           ...volunteerData
         });
 
-        await volunteer.save();
+        await volunteer.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
 
         return res.status(200).send({
           message: 'Volunteer created!',
@@ -79,7 +101,24 @@ class AuthController {
         });
       }
     } catch (error) {
-      res.status(400).send(error);
+      await session.abortTransaction();
+      session.endSession();
+
+      if (error.code === 11000) {
+        return res.status(400).send({ message: 'Email already exists.' });
+      }
+
+      if (error.name === "ValidationError") {
+        let errors = {};
+
+        Object.keys(error.errors).forEach((key) => {
+          errors[key] = error.errors[key].message;
+        });
+
+        return res.status(400).send(errors);
+      } else {
+        res.status(400).send(error);
+      }
     }
   }
 
