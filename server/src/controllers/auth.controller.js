@@ -10,10 +10,10 @@ class AuthController {
     try {
       let { email, password, userType } = req.body;
       let { name, charityNumber, province, city, about, address, contactInfo, website, fullName } = req.body;
-      let profileImage = req.file.path;
+      let profileImage = req.file?.path;
 
-      if (userType !== ORGANIZATION || userType !== VOLUNTEER) {
-        return res.status(401).send({ message: 'User Role is not valid.' });
+      if (userType !== ORGANIZATION && userType !== VOLUNTEER) {
+        return res.status(400).send({ message: 'Please provide a valid user type.' });
       }
 
       let userData = {
@@ -54,7 +54,7 @@ class AuthController {
         });
       }
 
-      if (req.body.userMetaData === VOLUNTEER) {
+      if (req.body.userType === VOLUNTEER) {
         let volunteerData = {
           fullName,
           province,
