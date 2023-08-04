@@ -8,3 +8,4 @@
 # Ignore the env variables
 /client/.env
 /server/.env
+/server/uploads
