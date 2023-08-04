@@ -1,4 +1,5 @@
 import cors from 'cors';
+import multer from "multer";
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from "mongoose";
