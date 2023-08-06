@@ -102,7 +102,6 @@ class AuthController {
       }
     } catch (error) {
       await session.abortTransaction();
-      session.endSession();
 
       if (error.code === 11000) {
         return res.status(400).send({ message: 'Email already exists.' });
@@ -119,6 +118,8 @@ class AuthController {
       } else {
         res.status(400).send(error);
       }
+    } finally {
+      session.endSession();
     }
   }
 
