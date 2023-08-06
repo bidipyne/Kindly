@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import UserModel from './user.model.js';
+
 const volunteerSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -17,12 +19,7 @@ const volunteerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  profileImage: String,
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
+  profileImage: String
 });
 
-export default mongoose.model('Volunteer', volunteerSchema);
+export default UserModel.discriminator('Volunteer', volunteerSchema);

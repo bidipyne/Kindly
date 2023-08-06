@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import UserModel from "./user.model.js";
+
 const organizationSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -38,12 +40,7 @@ const organizationSchema = new mongoose.Schema({
       },
       message: props => `${props.value} is not a valid URL!`
     },
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
   }
 });
 
-export default mongoose.model('Organization', organizationSchema);
+export default UserModel.discriminator('Organization', organizationSchema);

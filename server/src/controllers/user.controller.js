@@ -15,10 +15,10 @@ class UserController {
       if (userType) {
         switch (userType) {
           case 'organization':
-            data = await OrganizationModel.find().populate('userId').exec();
+            data = await UserModel.find({ userType: 'organization' }).exec();
             break;
           case 'volunteer':
-            data = await VolunteerModel.find().populate('userId').exec();
+            data = await UserModel.find({ userType: 'volunteer' }).exec();
             break;
           default:
             return res.status(400).json({ message: "Invalid userType provided. Valid types are 'organization' or 'volunteer'." });
@@ -30,15 +30,11 @@ class UserController {
         });
 
       } else {
-        const organizations = await OrganizationModel.find().populate('userId').exec();
-        const volunteers = await VolunteerModel.find().populate('userId').exec();
+        const data = await UserModel.find();
 
         return res.json({
           message: 'User list',
-          data: {
-            organizations,
-            volunteers
-          }
+          data
         });
       }
     } catch (error) {
@@ -67,24 +63,35 @@ class UserController {
   }
 
   static async deleteUser(req, res, next) {
+    const userId = req.params.userId;
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      let deleteResult = await OrganizationModel.deleteOne({ user_id: mongoose.Types.ObjectId(userId) }).session(session);
+      const user = await UserModel.findById(userId).session(session);
 
-      if (deleteResult.deletedCount === 0) {
-        await VolunteerModel.deleteOne({ user_id: mongoose.Types.ObjectId(userId) }).session(session);
+      if (!user) {
+        throw new Error("User not found.");
       }
 
-      await UserModel.deleteOne({ _id: mongoose.Types.ObjectId(userId) }).session(session);
+      const discriminatorModel = UserModel.discriminators[user.userType];
+
+      if (!discriminatorModel) {
+        throw new Error("Invalid userType.");
+      }
+
+      const associatedDocument = await discriminatorModel.findById(userId).session(session);
+
+      await associatedDocument.deleteOne().session(session);
+
+      await user.deleteOne().session(session);
 
       await session.commitTransaction();
 
       return res.json({
-        message: 'User deleted.'
+        message: 'User and associated data deleted successfully.'
       });
-
     } catch (error) {
       await session.abortTransaction();
 

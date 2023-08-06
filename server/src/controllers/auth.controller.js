@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import UserModel from '../models/user.model.js';
-import volunteerModel from '../models/volunteer.model.js';
-import organizationModel from '../models/organization.model.js';
+import VolunteerModel from '../models/volunteer.model.js';
+import OrganizationModel from '../models/organization.model.js';
 import { ORGANIZATION, VOLUNTEER } from '../config/constants.js';
 
 class AuthController {
@@ -30,18 +30,14 @@ class AuthController {
       let profileImage = req.file?.path;
 
       const validUserTypes = [ORGANIZATION, VOLUNTEER];
+
       if (!validUserTypes.includes(userType)) {
         return res.status(400).send({ message: 'Please provide a valid user type.' });
       }
 
-      const user = new UserModel({
-        email,
-        password,
-        userType,
-      });
-      await user.save({ session });
+      let userData;
 
-      if (req.body.userType === ORGANIZATION) {
+      if (userType === ORGANIZATION) {
         let organizationData = {
           name,
           charityNumber,
@@ -51,55 +47,49 @@ class AuthController {
           address,
           contactInfo,
           website,
-          profileImage
+          profileImage,
         };
 
-        const organization = new organizationModel({
-          userId: user._id,
-          ...organizationData
+        const organization = new OrganizationModel({
+          email,
+          password,
+          userType,
+          ...organizationData,
         });
+
+        userData = organization;
 
         await organization.save({ session });
-
-        await session.commitTransaction();
-        session.endSession();
-
-        return res.status(200).send({
-          message: 'Organization created!',
-          data: {
-            userId: user._id,
-            organizationId: organization._id
-          }
-        });
       }
 
-      if (req.body.userType === VOLUNTEER) {
+      if (userType === "volunteer") {
         let volunteerData = {
           fullName,
           province,
           city,
           address,
-          profileImage
+          profileImage,
         };
 
-        const volunteer = new volunteerModel({
-          userId: user._id,
-          ...volunteerData
+        const volunteer = new VolunteerModel({
+          email,
+          password,
+          userType,
+          ...volunteerData,
         });
+
+        userData = volunteer;
 
         await volunteer.save({ session });
-
-        await session.commitTransaction();
-        session.endSession();
-
-        return res.status(200).send({
-          message: 'Volunteer created!',
-          data: {
-            userId: user._id,
-            volunteerId: volunteer._id
-          }
-        });
       }
+
+      await session.commitTransaction();
+      session.endSession();
+
+      return res.status(200).send({
+        message: userType === "organization" ? "Organization created!" : "Volunteer created!",
+        data: userData,
+      });
     } catch (error) {
       await session.abortTransaction();
 
@@ -122,6 +112,7 @@ class AuthController {
       session.endSession();
     }
   }
+
 
   static async login(req, res, next) {
     try {
