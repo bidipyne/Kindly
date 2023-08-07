@@ -8,6 +8,6 @@ export default class CommonRoute {
   constructor() {
     this.router = Router();
 
-    this.router.route("/upload").post(upload.single("profileImage"), CommonCtrl.uploadImage)
+    this.router.route("/upload").patch(upload.single("profileImage"), CommonCtrl.uploadImage)
   }
 }

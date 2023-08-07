@@ -9,11 +9,11 @@ class CommonCtrl {
   static async uploadImage(req, res, next) {
     try {
       let { userId } = req.body;
-      let profileImage = req.file?.profileImage;
+      let profileImage = req.file?.path;
 
-      if (!userId) {
+      if (!userId || !profileImage) {
         return res.status(400).json({
-          message: 'Please provide a userId to upload image for.'
+          message: 'Missing required path - userId or file.'
         });
       }
 
@@ -24,7 +24,7 @@ class CommonCtrl {
           profileImage
         });
 
-        await organization.save();
+        await organization.save({ validateBeforeSave: false });
       }
 
       if (user.userType === VOLUNTEER) {
@@ -32,12 +32,12 @@ class CommonCtrl {
           profileImage
         });
 
-        volunteer.save();
+        volunteer.save({ validateBeforeSave: false });
       }
 
       res.json({ message: 'Image uploaded successfully' });
     } catch (error) {
-      res.status(500).json({ error: 'Error uploading image' });
+      res.status(500).json({ error: 'Error uploading image: ' + error.message });
     }
   }
 }

@@ -20,9 +20,15 @@ class ProjectController {
 
   static async addProject(req, res, next) {
     try {
-      const userId = req.headers['userId'];
+      const userId = req.headers['userId']; // let's act this as a JWT
       const profileImage = req.file?.profileImage;
       const { title, details, startDate, endDate, status, location, contactInfo, lookingFor } = req.body;
+
+      if (!userId) {
+        return res.status(400).json({
+          message: 'Authentication failed. No token in headers.'
+        });
+      }
 
       const project = new ProjectModel({
         title,
