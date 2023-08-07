@@ -1,4 +1,6 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
+
+import { HOST, PORT } from '../config/constants.js';
 
 const projectSchema = new mongoose.Schema({
   title: {
@@ -36,6 +38,17 @@ const projectSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   }
+});
+
+projectSchema.set('toObject', { virtuals: true });
+projectSchema.set('toJSON', { virtuals: true });
+
+projectSchema.virtual('fullProfileImageUrl').get(function () {
+  if (this.profileImage) {
+    return `${HOST}:${PORT}/${this.profileImage}`;
+  }
+
+  return null;
 });
 
 export default mongoose.model('Project', projectSchema);

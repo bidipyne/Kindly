@@ -35,7 +35,7 @@ class CommonCtrl {
         volunteer.save({ validateBeforeSave: false });
       }
 
-      res.json({ message: 'Image uploaded successfully' });
+      res.json({ message: 'Image uploaded successfully.' });
     } catch (error) {
       res.status(500).json({ error: 'Error uploading image: ' + error.message });
     }

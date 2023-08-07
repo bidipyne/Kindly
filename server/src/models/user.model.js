@@ -35,7 +35,11 @@ userSchema.set('toObject', { virtuals: true });
 userSchema.set('toJSON', { virtuals: true });
 
 userSchema.virtual('fullProfileImageUrl').get(function () {
-  return `${HOST}:${PORT}/${this.profileImage}`;
+  if (this.profileImage) {
+    return `${HOST}:${PORT}/${this.profileImage}`;
+  }
+
+  return null;
 });
 
 userSchema.pre('save', async function (next) {
