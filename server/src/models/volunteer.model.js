@@ -20,6 +20,6 @@ const volunteerSchema = new mongoose.Schema({
     required: true
   },
   profileImage: String
-});
+}, { discriminatorKey: 'userType' });
 
-export default UserModel.discriminator('Volunteer', volunteerSchema);
+export default UserModel.discriminator('volunteer', volunteerSchema);

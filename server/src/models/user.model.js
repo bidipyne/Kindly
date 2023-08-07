@@ -5,9 +5,7 @@ import { saltRounds } from "../config/constants.js";
 
 const userSchema = new mongoose.Schema({
   username: {
-    type: String,
-    // required: true,
-    // unique: true
+    type: String
   },
   email: {
     type: String,
@@ -17,10 +15,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 5,  // minimum length validation
+    minlength: 5,
     validate: {
       validator: function(v) {
-        // Regular expression to check for at least one number and one uppercase letter
         return /(?=.*\d)(?=.*[A-Z])/.test(v);
       },
       message: props => 'Password should contain at least one number and one uppercase letter!'

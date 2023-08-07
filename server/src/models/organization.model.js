@@ -41,6 +41,6 @@ const organizationSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid URL!`
     },
   }
-});
+}, { discriminatorKey: 'userType' });
 
-export default UserModel.discriminator('Organization', organizationSchema);
+export default UserModel.discriminator('organization', organizationSchema);

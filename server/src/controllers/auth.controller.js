@@ -8,8 +8,6 @@ class AuthController {
   constructor() { }
 
   static async signup(req, res, next) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
       let {
@@ -59,10 +57,10 @@ class AuthController {
 
         userData = organization;
 
-        await organization.save({ session });
+        await organization.save();
       }
 
-      if (userType === "volunteer") {
+      if (userType === VOLUNTEER) {
         let volunteerData = {
           fullName,
           province,
@@ -80,11 +78,8 @@ class AuthController {
 
         userData = volunteer;
 
-        await volunteer.save({ session });
+        await volunteer.save();
       }
-
-      await session.commitTransaction();
-      session.endSession();
 
       return res.status(200).send({
         message: userType === "organization" ? "Organization created!" : "Volunteer created!",
@@ -108,11 +103,8 @@ class AuthController {
       } else {
         res.status(400).send(error);
       }
-    } finally {
-      session.endSession();
     }
   }
-
 
   static async login(req, res, next) {
     try {

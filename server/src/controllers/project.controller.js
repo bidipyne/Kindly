@@ -72,7 +72,21 @@ class ProjectController {
   }
 
   static async deleteProject(req, res, next) {
+    try {
+      const { id } = req.params;
 
+      const project = ProjectModel.findById(id);
+
+      if (!project) {
+        return res.status(400).json({
+          message: 'No project found.'
+        });
+      }
+
+
+    } catch (error) {
+
+    }
   }
 }
 

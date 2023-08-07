@@ -8,8 +8,7 @@ export default class UserRoute {
     this.router = Router();
 
     this.router.route("/")
-      .get(UserCtrl.getUsers)
-      .post(UserCtrl.addUser);
+      .get(UserCtrl.getUsers);
 
     this.router.route("/:id")
       .get(UserCtrl.getUser)
