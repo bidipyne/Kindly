@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 
-import { saltRounds } from "../config/constants.js";
+import { saltRounds, HOST, PORT } from "../config/constants.js";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /(?=.*\d)(?=.*[A-Z])/.test(v);
       },
       message: props => 'Password should contain at least one number and one uppercase letter!'
@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema({
     enum: ['organization', 'volunteer'],
     required: true,
   }
+});
+
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
+
+userSchema.virtual('fullProfileImageUrl').get(function () {
+  return `${HOST}:${PORT}/${this.profileImage}`;
 });
 
 userSchema.pre('save', async function (next) {
