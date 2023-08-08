@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "36c701a3-e665-4840-9325-ceeb3289e56a",
+		"name": "Kindly",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1390278"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": []
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3001/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/:Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3001/users/64d0375fdc0f7a503ff5c45b",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"64d0375fdc0f7a503ff5c45b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users/:Id Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3001/users/64d0375fdc0f7a503ff5c45b",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"64d0375fdc0f7a503ff5c45b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "userType",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "fullName",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "charityNumber",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "contactInfo",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3001/sign-up",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "parwatkunwawr08311@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Note@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3001/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Common/Uploads",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "64d03d68b6d32edbc1c126d8",
+									"type": "text"
+								},
+								{
+									"key": "profileImage",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3001/common/upload",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"common",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
