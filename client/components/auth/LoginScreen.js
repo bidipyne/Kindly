@@ -1,12 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import axios from 'axios';
+import qs from 'qs';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Handle login functionality here
+    let data = qs.stringify({
+      email: username, // Using the username from state, assuming it's the email
+      password: password,
+    });
+
+    //let host = process.env.EXPO_PUBLIC_HOST;
+    let host = 'http://10.51.224.203:3001';
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: host+'/login',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: data,
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        let userType = response.data.data.userType;
+        console.log(userType);
+        if(userType == 'volunteer') {
+          navigation.navigate('VolunteerWelcomeScreen');
+        }
+
+        // You can handle the response here, for example, by redirecting to another screen
+      })
+      .catch((error) => {
+        console.log(error);
+        // You can handle errors here, for example, by showing an error message
+      });
   }
 
   return (

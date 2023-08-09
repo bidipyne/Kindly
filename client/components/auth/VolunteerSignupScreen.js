@@ -13,6 +13,8 @@ const VolunteerSignupScreen = ({ navigation }) => {
 
   const handleSignUp = () => {
     // Combine all fields and submit
+    const userType = 'volunteer';
+    
     const formData = {
       fullName,
       email,
@@ -20,6 +22,7 @@ const VolunteerSignupScreen = ({ navigation }) => {
       city,
       password,
       avatar,
+      userType,
     };
     // Submit form data
     navigation.navigate('VolunteerWelcomeScreen');
