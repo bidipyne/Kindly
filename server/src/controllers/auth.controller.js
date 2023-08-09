@@ -87,6 +87,8 @@ class AuthController {
       });
     } catch (error) {
 
+      console.log('ee', error.message)
+
       if (error.code === 11000) {
         return res.status(400).send({ message: 'Email already exists.' });
       }
@@ -100,7 +102,7 @@ class AuthController {
 
         return res.status(400).send(errors);
       } else {
-        res.status(400).send(error);
+        res.status(500).json({message: 'error ' + error.message});
       }
     }
   }

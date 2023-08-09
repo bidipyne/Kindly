@@ -25,12 +25,12 @@ const organizationSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: true
+    // required: true
   },
   profileImage: String,
   contactInfo: {
     type: String,
-    required: true
+    // required: true
   },
   website: {
     type: String,
