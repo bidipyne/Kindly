@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
+import NonProfitSignupScreenOne from './components/auth/NonProfitSignupScreenOne';
+import NonProfitSignupScreenTwo from './components/auth/NonProfitSignupScreenTwo';
+import VolunteerSignupScreen from './components/auth/VolunteerSignupScreen';
+import LoginScreen from './components/auth/LoginScreen';
+import VolunteerWelcomeScreen from './components/volunteer/VolunteerWelcomeScreen';
+import WelcomeScreen from './components/WelcomeScreen';
+
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Welcome">
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="NonProfitSignupScreenOne" component={NonProfitSignupScreenOne} />
+        <Stack.Screen name="NonProfitSignupScreenTwo" component={NonProfitSignupScreenTwo} />
+        <Stack.Screen name="VolunteerSignup" component={VolunteerSignupScreen} />
+        <Stack.Screen name="VolunteerWelcomeScreen" component={VolunteerWelcomeScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
