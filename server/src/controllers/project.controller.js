@@ -96,7 +96,7 @@ class ProjectController {
     }
   }
 
-  static async updateProjectById(req, res, next) {
+  static async updateProject(req, res, next) {
     try {
       const projectId = req.params.id;
       const { title, details, startDate, endDate, status, location, contactInfo, lookingFor } = req.body;
