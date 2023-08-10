@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import axios from 'axios';
 
 const VolunteerSignupScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
@@ -11,19 +12,52 @@ const VolunteerSignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
 
-  const handleSignUp = () => {
-    // Combine all fields and submit
-    const formData = {
-      fullName,
-      email,
-      state,
-      city,
-      password,
-      avatar,
-    };
-    // Submit form data
-    navigation.navigate('VolunteerWelcomeScreen');
+  const handleSignUp = async () => {
+  const userType = 'volunteer';
+
+  let data = new FormData();
+  data.append('email', email);
+  data.append('password', password);
+  data.append('userType', userType);
+  data.append('fullName', fullName);
+  data.append('province', state); // Assuming state variable represents province
+  data.append('city', city);
+  data.append('address', ''); // Add address if necessary
+  data.append('name', '');
+  data.append('charityNumber', '');
+  data.append('contactInfo', '');
+
+  if (avatar) {
+    const fileUriParts = avatar.split('.');
+    const fileType = fileUriParts[fileUriParts.length - 1];
+
+    data.append('profileImage', {
+      uri: avatar,
+      name: `avatar.${fileType}`,
+      type: `image/${fileType}`,
+    });
+  }
+  let host = 'http://10.51.224.203:3001';
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: host+'/sign-up',
+    data: data,
   };
+
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      // You can handle the response here, for example, by redirecting to another screen
+      navigation.navigate('VolunteerWelcomeScreen');
+    })
+    .catch((error) => {
+      console.log(error);
+      // You can handle errors here, for example, by showing an error message
+    });
+};
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

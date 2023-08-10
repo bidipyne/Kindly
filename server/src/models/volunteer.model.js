@@ -17,7 +17,7 @@ const volunteerSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: true
+    //required: true
   },
   profileImage: String
 }, { discriminatorKey: 'userType' });
