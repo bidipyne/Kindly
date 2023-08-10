@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 
 import UserModel from "./user.model.js";
 
+const reviewSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Assuming User model
+  rating: { type: Number, min: 1, max: 5 },
+  description: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
 const organizationSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -40,7 +47,8 @@ const organizationSchema = new mongoose.Schema({
       },
       message: props => `${props.value} is not a valid URL!`
     },
-  }
+  },
+  reviews: [reviewSchema]
 }, { discriminatorKey: 'userType' });
 
 export default UserModel.discriminator('organization', organizationSchema);

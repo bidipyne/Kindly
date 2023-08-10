@@ -98,9 +98,11 @@ class AuthController {
           errors[key] = error.errors[key].message;
         });
 
-        return res.status(400).send(errors);
+        return res.status(400).json({
+          message: errors
+        });
       } else {
-        res.status(400).send(error);
+        res.status(500).json({message: 'Error: ' + error.message});
       }
     }
   }
