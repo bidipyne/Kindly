@@ -30,13 +30,14 @@ class OrganizationController {
     }
   }
 
+  //TODO: Only let review if a volunteer has volunteered with an organization.
   static async reviewOrganization(req, res, next) {
     try {
-      let organizationId = req.params.id;
+      let organizationId = req.params.orgId;
       let userId = req.headers['userid'];
       const { rating, description } = req.body
 
-      const user = UserModel.findById(userId);
+      const user = await UserModel.findById(userId);
 
       if (!user || user.userType !== VOLUNTEER) {
         return res.status(400).json({
@@ -44,7 +45,7 @@ class OrganizationController {
         })
       }
 
-      const organization = OrganizationModel.findById(organizationId);
+      const organization = await OrganizationModel.findById(organizationId);
 
       if (!organization) {
         return res.status(400).json({

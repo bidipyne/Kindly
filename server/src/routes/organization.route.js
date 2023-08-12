@@ -7,7 +7,7 @@ export default class OrganizationRoute {
   constructor() {
     this.router = Router();
 
-    this.router.route("/")
-      .get(OrganizationCtrl.getOrganizationsWithProjects);
+    this.router.route("/").get(OrganizationCtrl.getOrganizationsWithProjects);
+    this.router.route("/:orgId/review").put(OrganizationCtrl.reviewOrganization);
   }
 }
