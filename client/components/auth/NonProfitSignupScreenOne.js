@@ -12,8 +12,8 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create your account</Text>
-      
-      <Text style={styles.label}>Organisation Name</Text>
+
+      <Text style={styles.label}>Organization Name</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setOrganisationName(text)}
@@ -34,7 +34,7 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
         value={email}
       />
 
-      <Text style={styles.label}>State / Province</Text>
+      <Text style={styles.label}>State/Province</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setState(text)}
@@ -74,18 +74,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
+    // textAlign: 'center',
     fontSize: 29,
-    margin: 10,
+    fontWeight: '600',
+    marginVertical: 20,
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
   },
   label: {
-    fontSize: 16,
-    marginLeft: 5,
+    fontSize: 14,
+    marginBottom: 5,
     marginTop: 10,
     color: '#000000',
   },
@@ -98,14 +101,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    margin: 10,
+    marginVertical: 10,
+    width: '100%',
     padding: 10,
     backgroundColor: '#009CE0',
     borderRadius: 5,
     height: 55,
+    justifyContent: 'center'
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '500',
     color: '#FFF',
     textAlign: 'center',
   },

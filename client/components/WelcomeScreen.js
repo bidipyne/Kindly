@@ -13,9 +13,9 @@ const WelcomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VolunteerSignup')}>
         <Text style={styles.buttonText}>Volunteer Signup</Text>
       </TouchableOpacity>
-      <Text 
+      <Text
         style={styles.loginLink}
-        onPress={() => navigation.navigate('LoginScreen')} 
+        onPress={() => navigation.navigate('LoginScreen')}
       >
         Already have an account? Login
       </Text>
@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   welcomeText: {
-    fontSize: 24,
+    fontSize: 30,
+    fontWeight: '600',
     textAlign: 'center',
     margin: 10,
     color: '#009CE0',
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     margin: 10,
-    color: '#009CE0',
+    // color: '#009CE0',
   },
   button: {
     margin: 10,

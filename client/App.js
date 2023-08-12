@@ -8,6 +8,7 @@ import VolunteerSignupScreen from './components/auth/VolunteerSignupScreen';
 import LoginScreen from './components/auth/LoginScreen';
 import VolunteerWelcomeScreen from './components/volunteer/VolunteerWelcomeScreen';
 import WelcomeScreen from './components/WelcomeScreen';
+import OrganizationWelcomeScreen from './components/organization/OrganizationWelcomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ function App() {
         <Stack.Screen name="NonProfitSignupScreenTwo" component={NonProfitSignupScreenTwo} />
         <Stack.Screen name="VolunteerSignup" component={VolunteerSignupScreen} />
         <Stack.Screen name="VolunteerWelcomeScreen" component={VolunteerWelcomeScreen} />
+        <Stack.Screen name="OrganizationWelcomeScreen" component={OrganizationWelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>

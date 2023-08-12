@@ -14,6 +14,9 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
   const { organisationName, charityNumber, email, state, city, password } = route.params;
 
 const handleSignUp = async () => {
+
+  return navigation.navigate('OrganizationWelcomeScreen');
+
   let userType = 'organization';
 
   let data = new FormData();
@@ -53,7 +56,7 @@ const handleSignUp = async () => {
       //navigation.navigate('OrganizationWelcomeScreen'); // Update the screen name as needed
     })
     .catch((error) => {
-      console.log(error);
+      console.log("Axios error from organization sign up: ", error.response.data);
       // You can handle errors here, for example, by showing an error message
     });
 };
@@ -82,7 +85,7 @@ const handleSignUp = async () => {
         <Text style={styles.label}>Click here to upload</Text>
         <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
       </TouchableOpacity>
-      
+
       {logo && <Image source={{ uri: logo }} style={styles.logo} />}
 
       <Text style={styles.label}>About Us</Text>
@@ -126,17 +129,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 29,
-    margin: 10,
+    marginVertical: 20,
+    fontWeight: '600',
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
   },
   label: {
     fontSize: 16,
-    marginLeft: 5,
+    marginBottom: 5,
     marginTop: 10,
     color: '#000000',
   },
@@ -157,22 +163,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    margin: 10,
+    marginVertical: 10,
+    width: '100%',
     padding: 10,
     backgroundColor: '#009CE0',
     borderRadius: 5,
+    justifyContent:'center',
     height: 55,
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '500',
     color: '#FFF',
     textAlign: 'center',
   },
   imageUpload: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 30, // Add some space before About Us
+    marginVertical: 30, // Add some space before About Us
   },
   imageIcon: {
     marginLeft: 10, // Add some space between the text and the icon
