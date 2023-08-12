@@ -9,11 +9,15 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
 
   }, []);
 
+  const handleCreateProject = () => {
+    navigation.navigate('CreateProjectForm');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Your Projects</Text>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={handleCreateProject}>
           <Text style={styles.buttonText}>Create Project</Text>
         </Pressable>
       </View>
