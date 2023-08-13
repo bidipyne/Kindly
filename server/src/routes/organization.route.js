@@ -8,6 +8,7 @@ export default class OrganizationRoute {
     this.router = Router();
 
     this.router.route("/").get(OrganizationCtrl.getOrganizationsWithProjects);
+    this.router.route("/:organizationId").get(OrganizationCtrl.getOrganizationWithProjectsByOrgId);
     this.router.route("/:orgId/review").put(OrganizationCtrl.reviewOrganization);
   }
 }

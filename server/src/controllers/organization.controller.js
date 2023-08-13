@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import UserModel from '../models/user.model.js';
 import { ORGANIZATION, VOLUNTEER } from '../config/constants.js';
 import VolunteerModel from '../models/volunteer.model.js';
@@ -22,6 +23,49 @@ class OrganizationController {
       res.status(200).json({
         message: 'Organizations with projects fetched successfully.',
         data: organizationsWithProjects
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Server Error: ' + error.message
+      });
+    }
+  }
+
+  static async getOrganizationWithProjectsByOrgId(req, res, next) {
+    try {
+      const orgId = req.params.organizationId;
+
+      if (!orgId) {
+        return res.status(400).json({
+          message: 'Organization ID is required.'
+        });
+      }
+
+      const organizationWithProjects = await OrganizationModel.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(orgId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'projects',
+            localField: '_id',
+            foreignField: 'organizationId',
+            as: 'projects'
+          }
+        }
+      ]);
+
+      if (organizationWithProjects.length === 0) {
+        return res.status(404).json({
+          message: 'Organization not found.'
+        });
+      }
+
+      res.status(200).json({
+        message: 'Organization with projects fetched successfully.',
+        data: organizationWithProjects[0]
       });
     } catch (error) {
       res.status(500).json({
