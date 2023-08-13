@@ -1,17 +1,64 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native';
+
+import { getOrganizationProjects } from '../api/organization';
+import { fallbackImage } from '../constants';
 
 const NonProfitSignupScreenOne = ({ navigation }) => {
 
   const [projects, setProjects] = React.useState([]);
+  const [organization, setOrganization] = React.useState('');
 
   React.useEffect(() => {
+    getOrganizationProjects('64d03d68b6d32edbc1c126d8')
+      .then((data) => {
+        setOrganization({
+          ...organization,
+          name: data?.data?.name
+        });
 
+        setProjects(data?.data?.projects);
+      })
+      .catch(console.log);
   }, []);
 
   const handleCreateProject = () => {
     navigation.navigate('CreateProjectForm');
-  }
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.project}>
+      <Image
+        source={{ uri: item?.fullProfileImageUrl || fallbackImage }}
+        style={styles.image}
+      />
+      <View style={styles.projectDesc}>
+        <View style={{
+          marginVertical: 10
+        }}>
+          <Text>{item.title}</Text>
+          <Text style={{
+            marginTop: 10
+          }}>By: {organization.name}</Text>
+        </View>
+        <View style={styles.action}>
+          <Pressable>
+            <Text style={{
+              color: '#009CE0',
+              width: 50
+            }}>Edit</Text>
+          </Pressable>
+
+          <Pressable>
+            <Text style={{
+              color: '#009CE0',
+              width: 50
+            }}>Delete</Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -20,6 +67,13 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
         <Pressable style={styles.button} onPress={handleCreateProject}>
           <Text style={styles.buttonText}>Create Project</Text>
         </Pressable>
+      </View>
+      <View>
+        <FlatList
+          data={projects}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     </View>
   );
@@ -79,6 +133,27 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  project: {
+    borderWidth: 1,
+    flexDirection: 'row',
+    borderColor: '#707070',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginHorizontal: 30,
+    marginBottom: 10
+  },
+  image: {
+    height: 100,
+    width: 100,
+  },
+  projectDesc: {
+    marginLeft: 10
+  },
+  action: {
+    flexDirection: 'row',
+    marginTop: 10,
+  }
 });
 
 export default NonProfitSignupScreenOne;

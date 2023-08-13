@@ -4,7 +4,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-
 const ProjectForm = ({ navigation }) => {
   const [projectTitle, setProjectTitle] = React.useState('');
   const [details, setDetails] = React.useState('');
