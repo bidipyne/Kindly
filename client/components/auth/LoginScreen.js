@@ -33,6 +33,8 @@ const LoginScreen = ({ navigation }) => {
         console.log(userType);
         if(userType == 'volunteer') {
           navigation.navigate('VolunteerWelcomeScreen');
+        } else if(userType == 'organization') {
+          navigation.navigate('OrganizationWelcomeScreen');
         }
 
         // You can handle the response here, for example, by redirecting to another screen

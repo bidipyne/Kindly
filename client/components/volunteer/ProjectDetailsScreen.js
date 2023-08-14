@@ -5,7 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, Alert,
 } from 'react-native';
 
 const ProjectDetailsScreen = ({ route }) => {
