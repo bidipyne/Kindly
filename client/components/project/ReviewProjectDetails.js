@@ -9,6 +9,8 @@ import { fallbackImage } from '../constants';
 const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
 
   return (
+    <ScrollView showsVerticalScrollIndicator={true}>
+
     <View style={styles.container}>
       <Text style={styles.title}>Review your event</Text>
       <Text>{formData.projectTitle}</Text>
@@ -48,6 +50,7 @@ const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
         <Text style={styles.buttonText}>Publish</Text>
       </Pressable>
     </View>
+    </ScrollView>
   );
 };
 

@@ -42,7 +42,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
           }}>By: {organization.name}</Text>
         </View>
         <View style={styles.action}>
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('CreateProjectForm')}>
             <Text style={{
               color: '#009CE0',
               width: 50
