@@ -4,13 +4,13 @@ import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native
 import { fallbackImage } from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
-const NonProfitSignupScreenOne = ({ navigation }) => {
+const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const [projects, setProjects] = React.useState([]);
   const [organization, setOrganization] = React.useState('');
 
   React.useEffect(() => {
-    getOrganizationProjects('64d03d68b6d32edbc1c126d8')
+    getOrganizationProjects('64da75ad1284bb25ed2328b3')
       .then((data) => {
         setOrganization({
           ...organization,
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NonProfitSignupScreenOne;
+export default OrganizationWelcomeScreen;
