@@ -8,6 +8,8 @@ import VolunteerSignupScreen from './components/auth/VolunteerSignupScreen';
 import LoginScreen from './components/auth/LoginScreen';
 import VolunteerWelcomeScreen from './components/volunteer/VolunteerWelcomeScreen';
 import WelcomeScreen from './components/WelcomeScreen';
+import OrganizationWelcomeScreen from './components/organization/OrganizationWelcomeScreen';
+import ProjectForm from './components/project/ProjectForm';
 import ListOfProjectsScreen from './components/volunteer/ListOfProjectsScreen';
 import ListOfOrganizationsScreen from './components/volunteer/ListOfOrganizationsScreen';
 import OrganizationDetailsScreen from './components/volunteer/OrganizationDetailsScreen';
@@ -27,6 +29,8 @@ function App() {
         <Stack.Screen name="NonProfitSignupScreenTwo" component={NonProfitSignupScreenTwo} />
         <Stack.Screen name="VolunteerSignup" component={VolunteerSignupScreen} />
         <Stack.Screen name="VolunteerWelcomeScreen" component={VolunteerWelcomeScreen} />
+        <Stack.Screen name="OrganizationWelcomeScreen" component={OrganizationWelcomeScreen} />
+        <Stack.Screen name="CreateProjectForm" component={ProjectForm} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="ListOfProjectsScreen" component={ListOfProjectsScreen} />
         <Stack.Screen name="ListOfOrganizationsScreen" component={ListOfOrganizationsScreen} />
