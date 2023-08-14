@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import ReviewProjectDetails from './ReviewProjectDetails';
 
 const ProjectForm = ({ navigation }) => {
   const [projectTitle, setProjectTitle] = React.useState('');
@@ -13,6 +14,16 @@ const ProjectForm = ({ navigation }) => {
   const [location, setLocation] = React.useState('');
   const [contactInfo, setContactInfo] = React.useState('');
   const [weNeed, setWeNeed] = React.useState('volunteers');
+
+  const [showReview, setShowReview] = React.useState(false);
+
+  const handleSubmit = () => {
+
+  }
+
+  const onEdit = () => {
+    setShowReview(false);
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,113 +40,125 @@ const ProjectForm = ({ navigation }) => {
     }
   };
 
-  return (
-    <ScrollView showsVerticalScrollIndicator={true}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Create a new project</Text>
+  if (showReview) {
+    return <ReviewProjectDetails
+      formData={{
+        projectTitle,
+        details,
+        startDate,
+        endDate,
+        status,
+        location,
+        contactInfo,
+        weNeed
+      }}
+      onConfirm={handleSubmit}
+      onEdit={onEdit}
+    />;
+  } else {
+    return (
+      <ScrollView showsVerticalScrollIndicator={true}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Create a new project</Text>
 
-        <Text style={styles.label}>Title</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setProjectTitle(text)}
-          value={projectTitle}
-        />
+          <Text style={styles.label}>Title</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setProjectTitle(text)}
+            value={projectTitle}
+          />
 
-        <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
-          <Text style={styles.label}>Add Image &nbsp;</Text>
-          <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
+            <Text style={styles.label}>Add Image &nbsp;</Text>
+            <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
+          </TouchableOpacity>
 
-        <Text style={styles.label}>Details</Text>
-        <TextInput
-          style={styles.textArea}
-          onChangeText={text => setDetails(text)}
-          value={details}
-          multiline
-        />
-        <View style={styles.dateContainer}>
-          <View style={{
-            flexDirection: 'column',
-            flex: 1
-          }}>
-            <Text style={styles.label}>Start Date</Text>
-            <TextInput
-              style={styles.dateInput}
-              onChangeText={text => setStartDate(text)}
-              value={startDate}
-            />
+          <Text style={styles.label}>Details</Text>
+          <TextInput
+            style={styles.textArea}
+            onChangeText={text => setDetails(text)}
+            value={details}
+            multiline
+          />
+          <View style={styles.dateContainer}>
+            <View style={{
+              flexDirection: 'column',
+              flex: 1
+            }}>
+              <Text style={styles.label}>Start Date</Text>
+              <TextInput
+                style={styles.dateInput}
+                onChangeText={text => setStartDate(text)}
+                value={startDate}
+              />
+            </View>
+            <View style={{
+              flexDirection: 'column',
+              flex: 1,
+              marginLeft: 10
+            }}>
+              <Text style={styles.label}>End Date</Text>
+              <TextInput
+                style={styles.dateInput}
+                onChangeText={text => setEndDate(text)}
+                value={endDate}
+              />
+            </View>
           </View>
-          <View style={{
-            flexDirection: 'column',
-            flex: 1,
-            marginLeft: 10
+
+          <Text style={styles.label}>Status</Text>
+          <Dropdown
+            style={styles.dropdown}
+            data={[{ label: 'Ongoing', value: 'ongoing' },
+            { label: 'Closed', value: 'closed' },]}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Select item"
+            value={status}
+            onChange={item => {
+              setStatus(item.value);
+            }}
+          />
+
+          <Text style={styles.label}>Location</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setLocation(text)}
+            value={location}
+          />
+
+          <Text style={styles.label}>Contact Info</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setContactInfo(text)}
+            value={contactInfo}
+          />
+
+          <Text style={styles.label}>We need:</Text>
+          <Dropdown
+            style={styles.dropdown}
+            data={[{ label: 'Volunteers', value: 'volunteers' },
+            { label: 'Donations', value: 'donations' },]}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Select item"
+            value={weNeed}
+            onChange={item => {
+              setWeNeed(item.value);
+            }}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={() => {
+            setShowReview(true);
           }}>
-            <Text style={styles.label}>End Date</Text>
-            <TextInput
-              style={styles.dateInput}
-              onChangeText={text => setEndDate(text)}
-              value={endDate}
-            />
-          </View>
+            <Text style={styles.buttonText}>Create</Text>
+          </TouchableOpacity>
         </View>
-
-        <Text style={styles.label}>Status</Text>
-        <Dropdown
-          style={styles.dropdown}
-          data={[{ label: 'Ongoing', value: 'ongoing' },
-          { label: 'Closed', value: 'closed' },]}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select item"
-          value={status}
-          onChange={item => {
-            setStatus(item.value);
-          }}
-        />
-
-        <Text style={styles.label}>Location</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setLocation(text)}
-          value={location}
-        />
-
-        <Text style={styles.label}>Contact Info</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setContactInfo(text)}
-          value={contactInfo}
-        />
-
-        <Text style={styles.label}>We need:</Text>
-        <Dropdown
-          style={styles.dropdown}
-          data={[{ label: 'Volunteers', value: 'volunteers' },
-          { label: 'Donations', value: 'donations' },]}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select item"
-          value={weNeed}
-          onChange={item => {
-            setWeNeed(item.value);
-          }}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NonProfitSignupScreenTwo', {
-          organisationName,
-          charityNumber,
-          email,
-          state,
-          city,
-          password,
-        })}>
-          <Text style={styles.buttonText}>Create</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

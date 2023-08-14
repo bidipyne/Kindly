@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native';
 
-import { getOrganizationProjects } from '../api/organization';
 import { fallbackImage } from '../constants';
+import { getOrganizationProjects } from '../api/organization';
 
 const NonProfitSignupScreenOne = ({ navigation }) => {
 
