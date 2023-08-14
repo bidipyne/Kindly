@@ -10,6 +10,13 @@ import VolunteerWelcomeScreen from './components/volunteer/VolunteerWelcomeScree
 import WelcomeScreen from './components/WelcomeScreen';
 import OrganizationWelcomeScreen from './components/organization/OrganizationWelcomeScreen';
 import ProjectForm from './components/project/ProjectForm';
+import ListOfProjectsScreen from './components/volunteer/ListOfProjectsScreen';
+import ListOfOrganizationsScreen from './components/volunteer/ListOfOrganizationsScreen';
+import OrganizationDetailsScreen from './components/volunteer/OrganizationDetailsScreen';
+import ReviewScreen from './components/volunteer/ReviewScreen';
+import AccountDetailsScreen from './components/volunteer/AccountDetailsScreen';
+import ProjectDetailsScreen from './components/volunteer/ProjectDetailsScreen';
+// 
 
 const Stack = createStackNavigator();
 
@@ -25,6 +32,12 @@ function App() {
         <Stack.Screen name="OrganizationWelcomeScreen" component={OrganizationWelcomeScreen} />
         <Stack.Screen name="CreateProjectForm" component={ProjectForm} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="ListOfProjectsScreen" component={ListOfProjectsScreen} />
+        <Stack.Screen name="ListOfOrganizationsScreen" component={ListOfOrganizationsScreen} />
+        <Stack.Screen name="OrganizationDetailsScreen" component={OrganizationDetailsScreen} />
+        <Stack.Screen name="ReviewScreen" component={ReviewScreen} />
+        <Stack.Screen name="AccountDetailsScreen" component={AccountDetailsScreen} />
+        <Stack.Screen name="ProjectDetailsScreen" component={ProjectDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

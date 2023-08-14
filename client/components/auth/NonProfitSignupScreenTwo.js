@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
@@ -13,53 +13,43 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
 
   const { organisationName, charityNumber, email, state, city, password } = route.params;
 
-const handleSignUp = async () => {
+  const handleSignUp = async () => {
+    let data = new FormData();
+    data.append('email', email);
+    data.append('password', password);
+    data.append('userType', 'organization');
+    data.append('fullName', '');
+    data.append('province', state); 
+    data.append('city', city);
+    data.append('address', address);
+    data.append('name', organisationName);
+    data.append('charityNumber', charityNumber);
+    data.append('contactInfo', contactInfo);
 
-  return navigation.navigate('OrganizationWelcomeScreen');
+    if (logo) {
+      const fileUriParts = logo.split('/');
+      const fileType = fileUriParts[fileUriParts.length - 1].split('.')[1]; // Assuming file extension is after the last dot
 
-  let userType = 'organization';
+      data.append('profileImage', {
+        uri: logo,
+        name: `logo.${fileType}`,
+        type: `image/${fileType}`,
+      });
+    }
 
-  let data = new FormData();
-  data.append('email', email);
-  data.append('password', password);
-  data.append('userType', userType);
-  data.append('fullName', ''); // If necessary, update with the actual full name
-  data.append('province', state); // Assuming state variable represents province
-  data.append('city', city);
-  data.append('address', address);
-  data.append('name', organisationName);
-  data.append('charityNumber', charityNumber);
-  data.append('contactInfo', contactInfo);
-
-  if (logo) {
-    const fileUriParts = logo.split('.');
-    const fileType = fileUriParts[fileUriParts.length - 1];
-
-    data.append('profileImage', {
-      uri: logo,
-      name: `logo.${fileType}`,
-      type: `image/${fileType}`,
-    });
-  }
-  let host = 'http://10.51.224.203:3001';
-  let config = {
-    method: 'post',
-    url: host+'/sign-up',
-    data: data,
+    axios
+      .post('http://10.10.110.139:3001/sign-up', data)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        // You can handle the response here, for example, by redirecting to another screen
+        navigation.navigate('OrganizationWelcomeScreen'); // Update the screen name as needed
+      })
+      .catch((error) => {
+        console.log("Axios error from organization sign up: ", error.response.data);
+        Alert.alert('Signup Failure', `${error.response.data.message}`);
+      });
   };
 
-  axios
-    .request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      // You can handle the response here, for example, by redirecting to another screen
-      //navigation.navigate('OrganizationWelcomeScreen'); // Update the screen name as needed
-    })
-    .catch((error) => {
-      console.log("Axios error from organization sign up: ", error.response.data);
-      // You can handle errors here, for example, by showing an error message
-    });
-};
 
 
   const pickImage = async () => {

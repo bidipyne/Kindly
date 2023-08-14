@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
     });
 
     //let host = process.env.EXPO_PUBLIC_HOST;
-    let host = 'http://10.51.224.203:3001';
+    let host = 'http://10.10.110.139:3001';
 
     let config = {
       method: 'post',
@@ -33,6 +33,8 @@ const LoginScreen = ({ navigation }) => {
         console.log(userType);
         if(userType == 'volunteer') {
           navigation.navigate('VolunteerWelcomeScreen');
+        } else if(userType == 'organization') {
+          navigation.navigate('OrganizationWelcomeScreen');
         }
 
         // You can handle the response here, for example, by redirecting to another screen
