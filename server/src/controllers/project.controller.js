@@ -43,7 +43,7 @@ class ProjectController {
         });
       }
 
-      if (!user.userType !== ORGANIZATION) {
+      if (user.userType !== ORGANIZATION) {
         return res.status(400).json({
           message: 'Access Restricted. User is not an organization.'
         });

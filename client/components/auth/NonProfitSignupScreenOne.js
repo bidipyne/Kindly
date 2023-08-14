@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const NonProfitSignupScreenOne = ({ navigation }) => {
   const [organisationName, setOrganisationName] = useState('');
@@ -10,6 +10,7 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   return (
+    <ScrollView keyboardShouldPersistTaps='handled'>
     <View style={styles.container}>
       <Text style={styles.title}>Create your account</Text>
       
@@ -67,6 +68,7 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 

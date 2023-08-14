@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
     });
 
     //let host = process.env.EXPO_PUBLIC_HOST;
-    let host = 'http://10.51.224.203:3001';
+    let host = 'http://10.10.110.139:3001';
 
     let config = {
       method: 'post',
