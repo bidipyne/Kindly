@@ -18,7 +18,7 @@ const VolunteerWelcomeScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to Kindly!</Text>
       <Text style={styles.subtitle}>Search ways to help by:</Text>
-      
+
       <View style={styles.cardRow}>
         <TouchableOpacity style={styles.card} onPress={handleProjectsPress}>
           <View style={styles.cardContent}>
@@ -37,12 +37,12 @@ const VolunteerWelcomeScreen = () => {
       </View>
 
       <Text style={styles.featuredTitle}>Featured Project</Text>
-      
+
       {/* Featured Project Cards */}
       <View style={styles.cardRow}>
         <TouchableOpacity style={styles.featuredCard}>
           <Image
-            source={require('/Users/bidishapyne/MAD5274/Kindly/client/assets/icon.png')} // Replace with actual image source
+            source={require('../../assets/icon.png')} // Replace with actual image source
             style={styles.featuredImage}
           />
           <View style={styles.featuredCardContent}>
@@ -54,7 +54,7 @@ const VolunteerWelcomeScreen = () => {
         </TouchableOpacity>
         {/* Add more featured cards here */}
       </View>
-      
+
 
     </View>
   );
