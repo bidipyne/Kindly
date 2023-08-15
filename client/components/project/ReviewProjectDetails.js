@@ -1,8 +1,5 @@
 import React from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import { Dropdown } from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 
 import { fallbackImage } from '../constants';
 

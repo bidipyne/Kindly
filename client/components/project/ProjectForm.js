@@ -6,6 +6,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import ReviewProjectDetails from './ReviewProjectDetails';
+import { host } from '../constants'
 
 const ProjectForm = ({ navigation, route }) => {
   const [logo, setLogo] = React.useState(null);
@@ -25,7 +26,7 @@ const ProjectForm = ({ navigation, route }) => {
   React.useEffect(() => {
     if (projectId) {
 
-      axios.get(`http://127.0.0.1:3001/projects/${projectId}`)
+      axios.get(`${host}/projects/${projectId}`)
         .then(response => {
           const projectData = response?.data?.data;
 
@@ -76,7 +77,7 @@ const ProjectForm = ({ navigation, route }) => {
       let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `http://127.0.0.1:3001/projects/${projectId}`,
+        url: `${host}/projects/${projectId}`,
         headers: {
           'userid': '64d03d68b6d32edbc1c126d8',
         },
@@ -96,7 +97,7 @@ const ProjectForm = ({ navigation, route }) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:3001/projects',
+        url: `${host}/projects`,
         headers: {
           'userid': '64d03d68b6d32edbc1c126d8',
         },

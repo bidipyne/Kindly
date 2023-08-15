@@ -3,7 +3,7 @@ import axios, * as others from 'axios';
 import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import { fallbackImage, FILE_URL } from '../constants';
+import { fallbackImage, FILE_URL, host} from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
 const OrganizationWelcomeScreen = ({ navigation }) => {
@@ -49,7 +49,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const deleteProject = (projectId) => {
     axios
-      .delete(`http://127.0.0.1:3001/projects/${projectId}`)
+      .delete(`${host}/projects/${projectId}`)
       .then((response) => {
         console.log('Project deleted:', response.data);
         fetchOrganizationProjects();
@@ -64,7 +64,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
     let imageUrl = fallbackImage;
 
     if (item?.profileImage) {
-      imageUrl = `${FILE_URL}/${item.profileImage}`
+      imageUrl = `${host}/${item.profileImage}`
     }
 
     return (
