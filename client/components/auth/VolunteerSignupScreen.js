@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import { host } from '../constants';
+
 
 const VolunteerSignupScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
@@ -37,7 +39,7 @@ const VolunteerSignupScreen = ({ navigation }) => {
       type: `image/${fileType}`,
     });
   }
-  let host = 'http://10.51.224.203:3001';
+
   let config = {
     method: 'post',
     maxBodyLength: Infinity,
