@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react
 import { fallbackImage, FILE_URL } from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
-const NonProfitSignupScreenOne = ({ navigation }) => {
+const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const [projects, setProjects] = React.useState([]);
   const [organization, setOrganization] = React.useState('');
@@ -201,4 +201,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NonProfitSignupScreenOne;
+export default OrganizationWelcomeScreen;
