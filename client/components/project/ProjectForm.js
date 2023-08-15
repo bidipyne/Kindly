@@ -14,10 +14,10 @@ const ProjectForm = ({ navigation }) => {
   const [details, setDetails] = React.useState('');
   const [startDate, setStartDate] = React.useState('');
   const [endDate, setEndDate] = React.useState('');
-  const [status, setStatus] = React.useState('ongoing');
+  const [status, setStatus] = React.useState('Ongoing');
   const [location, setLocation] = React.useState('');
   const [contactInfo, setContactInfo] = React.useState('');
-  const [weNeed, setWeNeed] = React.useState('volunteers');
+  const [weNeed, setWeNeed] = React.useState('Volunteers');
 
   const [showReview, setShowReview] = React.useState(false);
 
@@ -45,23 +45,23 @@ const ProjectForm = ({ navigation }) => {
     }
 
     let config = {
-      method: 'put',
+      method: 'post',
       maxBodyLength: Infinity,
       url: 'http://127.0.0.1:3001/projects',
       headers: {
         'userid': '64d03d68b6d32edbc1c126d8',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        // 'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data : data
+      data: data
     };
 
     axios.request(config)
-    .then((response) => {
-      console.log('Success: ', JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log('Error:', error);
-    });
+      .then((response) => {
+        navigation.navigate('OrganizationWelcomeScreen');
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
   };
 
   const onEdit = (flag) => {
@@ -70,7 +70,6 @@ const ProjectForm = ({ navigation }) => {
 
   const handleDateChange = (type, text) => {
     const cleanedText = text.replace(/[^\d]/g, '');
-    console.log('t', type, text)
 
     if (cleanedText.length >= 1 && cleanedText.length <= 8) {
       let formattedText = cleanedText;
@@ -136,7 +135,9 @@ const ProjectForm = ({ navigation }) => {
         <View style={styles.container}>
           <Text style={styles.title}>Create a new project</Text>
 
-          <Text style={styles.label}>Title</Text>
+          <Text style={styles.label}>Title <Text style={{
+            color: 'red'
+          }}>*</Text></Text>
           <TextInput
             style={styles.input}
             onChangeText={text => setProjectTitle(text)}
@@ -189,15 +190,14 @@ const ProjectForm = ({ navigation }) => {
                   handleDateChange('endDate', text);
                 }}
               />
-
             </View>
           </View>
 
           <Text style={styles.label}>Status</Text>
           <Dropdown
             style={styles.dropdown}
-            data={[{ label: 'Ongoing', value: 'ongoing' },
-            { label: 'Closed', value: 'closed' },]}
+            data={[{ label: 'Ongoing', value: 'Ongoing' },
+            { label: 'Closed', value: 'Closed' },]}
             maxHeight={300}
             labelField="label"
             valueField="value"
@@ -225,8 +225,8 @@ const ProjectForm = ({ navigation }) => {
           <Text style={styles.label}>We need:</Text>
           <Dropdown
             style={styles.dropdown}
-            data={[{ label: 'Volunteers', value: 'volunteers' },
-            { label: 'Donations', value: 'donations' },]}
+            data={[{ label: 'Volunteers', value: 'Volunteers' },
+            { label: 'Donations', value: 'Donations' },]}
             maxHeight={300}
             labelField="label"
             valueField="value"
@@ -237,9 +237,19 @@ const ProjectForm = ({ navigation }) => {
             }}
           />
 
-          <TouchableOpacity style={styles.button} onPress={() => {
-            setShowReview(true);
-          }}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {
+                backgroundColor: projectTitle ? '#009CE0' : '#A0A0A0',
+                opacity: projectTitle ? 1 : 0.5
+              },
+            ]}
+            onPress={() => {
+              setShowReview(true);
+            }}
+            disabled={!projectTitle}
+          >
             <Text style={styles.buttonText}>Create</Text>
           </TouchableOpacity>
         </View>
