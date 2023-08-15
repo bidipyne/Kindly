@@ -1,12 +1,13 @@
 import React from 'react';
-const axios = require('axios');
+import axios, * as others from 'axios';
 import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { fallbackImage, FILE_URL } from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
 const OrganizationWelcomeScreen = ({ navigation }) => {
-
+  const isFocused = useIsFocused();
   const [projects, setProjects] = React.useState([]);
   const [organization, setOrganization] = React.useState('');
 
@@ -18,6 +19,8 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
       ...organization,
       name: response?.data?.name
     });
+
+    setProjects(response?.data?.projects);
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
@@ -25,7 +28,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
 
   React.useEffect(() => {
     fetchOrganizationProjects();
-  }, []);
+  }, [isFocused]);
 
   const handleCreateProject = () => {
     navigation.navigate('CreateProjectForm');
@@ -80,7 +83,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
         }}>
           <Text>{item.title}</Text>
           <Text style={{
-            marginTop: 10
+            marginTop: 20
           }}>By: {organization.name}</Text>
         </View>
         <View style={styles.action}>
@@ -186,11 +189,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginHorizontal: 30,
-    marginBottom: 10
+    marginBottom: 20
   },
   image: {
     height: 100,
-    width: 100,
+    width: 100
   },
   projectDesc: {
     marginLeft: 10

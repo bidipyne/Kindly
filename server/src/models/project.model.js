@@ -29,7 +29,7 @@ const projectSchema = new mongoose.Schema({
   },
   lookingFor: { // We need.
     type: String,
-    enum: ["Volunteering", "Donations"],
+    enum: ["Volunteers", "Donations"],
     default: "Donations"
   },
   profileImage: String,

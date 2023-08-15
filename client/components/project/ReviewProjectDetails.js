@@ -13,37 +13,38 @@ const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
 
     <View style={styles.container}>
       <Text style={styles.title}>Review your event</Text>
-      <Text>{formData.projectTitle}</Text>
+      <Text style={styles.projectTitle}>{formData.projectTitle}</Text>
       <Text>By: Organization name</Text>
+      {/* Get from persistant storage */}
 
       <Image
         source={{ uri: formData?.logo || fallbackImage }}
         style={styles.image}
       />
 
-      <View>
+      <View style={styles.contentWrapper}>
         <Text style={styles.label}>Details</Text>
-        <Text>{formData.details}</Text>
+        <Text style={styles.contentData}>{formData.details}</Text>
       </View>
 
-      <View>
+      <View style={styles.contentWrapper}>
         <Text style={styles.label}>Status</Text>
-        <Text>{formData.status}</Text>
+        <Text style={styles.contentData}>{formData.status}</Text>
       </View>
 
-      <View>
+      <View style={styles.contentWrapper}>
         <Text style={styles.label}>Location</Text>
-        <Text>{formData.location}</Text>
+        <Text style={styles.contentData}>{formData.location}</Text>
       </View>
 
-      <View>
+      <View style={styles.contentWrapper}>
         <Text style={styles.label}>Contact Info</Text>
-        <Text>{formData.contactInfo}</Text>
+        <Text style={styles.contentData}> {formData.contactInfo}</Text>
       </View>
 
-      <View>
+      <View style={styles.contentWrapper}>
         <Text style={styles.label}>Need</Text>
-        <Text>{formData.weNeed}</Text>
+        <Text style={styles.contentData}>{formData.weNeed}</Text>
       </View>
 
       <Pressable style={styles.button} onPress={onConfirm}>
@@ -69,6 +70,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+  },
+  projectTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginVertical: 10,
   },
   label: {
     fontSize: 14,
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-end',
-    marginVertical: 10
+    // marginVertical: 10
   },
   dateContainer: {
     flexDirection: 'row',
@@ -151,6 +157,12 @@ const styles = StyleSheet.create({
     color: '#009CE0',
     fontSize: 26,
     fontWeight: '400'
+  },
+  contentWrapper: {
+    marginBottom: 20
+  },
+  contentData: {
+    marginTop: 5
   }
 });
 
