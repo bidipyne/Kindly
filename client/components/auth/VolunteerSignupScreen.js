@@ -77,7 +77,7 @@ const VolunteerSignupScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create your account</Text>
-      
+
       <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
         <Text style={styles.label}>Upload your avatar</Text>
         <Icon name="image" size={30} color="#000" />
@@ -131,18 +131,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 29,
-    margin: 10,
+    marginVertical: 20,
+    fontWeight: '600',
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
   },
   label: {
-    fontSize: 16,
-    marginLeft: 5,
+    fontSize: 14,
+    marginBottom: 5,
     marginTop: 10,
     color: '#000000',
   },
@@ -155,7 +157,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    margin: 10,
+    width: '100%',
+    marginVertical: 10,
+    padding: 10,
     padding: 10,
     backgroundColor: '#009CE0',
     borderRadius: 5,
@@ -163,6 +167,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '600',
     color: '#FFF',
     textAlign: 'center',
   },

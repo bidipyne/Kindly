@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
       method: 'post',
       maxBodyLength: Infinity,
       url: host+'/login',
-      headers: { 
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       data: data,
@@ -62,9 +62,9 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <Text 
+      <Text
         style={styles.createAccountLink}
-        onPress={() => navigation.navigate('Welcome')} 
+        onPress={() => navigation.navigate('Welcome')}
       >
         Or create an account
       </Text>
@@ -76,18 +76,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 29,
-    margin: 10,
+    marginVertical: 20,
+    fontWeight: '600',
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
   },
   label: {
-    fontSize: 16,
-    marginLeft: 5,
+    fontSize: 14,
+    marginBottom: 5,
     marginTop: 10,
     color: '#000000',
   },
@@ -100,14 +102,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    margin: 10,
+    marginVertical: 10,
     padding: 10,
     backgroundColor: '#009CE0',
     borderRadius: 5,
-    height: 55
+    height: 55,
+    width: '100%',
+    justifyContent: 'center'
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '600',
     color: '#FFF',
     textAlign: 'center',
   },
