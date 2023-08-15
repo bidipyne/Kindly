@@ -30,10 +30,6 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
     fetchOrganizationProjects();
   }, [isFocused]);
 
-  const handleCreateProject = () => {
-    navigation.navigate('CreateProjectForm');
-  };
-
   const handleDeleteProject = (projectId) => {
     Alert.alert('Confirm Delete', 'Are you sure you want to delete this project?', [
       {
@@ -87,7 +83,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
           }}>By: {organization.name}</Text>
         </View>
         <View style={styles.action}>
-          <Pressable onPress={() => navigation.navigate('CreateProjectForm')}>
+          <Pressable onPress={() => navigation.navigate('ProjectForm', { projectId: item._id })}>
             <Text style={{
               color: '#009CE0',
               width: 50
@@ -112,7 +108,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Your Projects</Text>
-        <Pressable style={styles.button} onPress={handleCreateProject}>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('ProjectForm')}>
           <Text style={styles.buttonText}>Create Project</Text>
         </Pressable>
       </View>

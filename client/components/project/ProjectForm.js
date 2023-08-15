@@ -1,14 +1,13 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import qs from 'qs';
+import { Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import ReviewProjectDetails from './ReviewProjectDetails';
 
-const ProjectForm = ({ navigation }) => {
+const ProjectForm = ({ navigation, route }) => {
   const [logo, setLogo] = React.useState(null);
   const [projectTitle, setProjectTitle] = React.useState('');
   const [details, setDetails] = React.useState('');
@@ -20,6 +19,35 @@ const ProjectForm = ({ navigation }) => {
   const [weNeed, setWeNeed] = React.useState('Volunteers');
 
   const [showReview, setShowReview] = React.useState(false);
+
+  const projectId = route?.params?.projectId;
+
+  React.useEffect(() => {
+    if (projectId) {
+
+      axios.get(`http://127.0.0.1:3001/projects/${projectId}`)
+        .then(response => {
+          const projectData = response?.data?.data;
+
+          console.log('pro', projectData);
+
+          setProjectTitle(projectData.title);
+          setDetails(projectData.details);
+          setStartDate(formatDate(projectData.startDate));
+          setEndDate(formatDate(projectData.endDate));
+          setStatus(projectData.status);
+          setLocation(projectData.location);
+          setContactInfo(projectData.contactInfo);
+          setWeNeed(projectData.lookingFor);
+          setLogo(projectData.fullProfileImageUrl);
+
+          // Any other necessary state updates...
+        })
+        .catch(error => {
+          console.log('Error fetching project:', error);
+        });
+    }
+  }, [projectId]);
 
   const handleSubmit = () => {
 
@@ -44,28 +72,49 @@ const ProjectForm = ({ navigation }) => {
       });
     }
 
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://127.0.0.1:3001/projects',
-      headers: {
-        'userid': '64d03d68b6d32edbc1c126d8',
-        // 'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: data
-    };
+    if (projectId) {
+      let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `http://127.0.0.1:3001/projects/${projectId}`,
+        headers: {
+          'userid': '64d03d68b6d32edbc1c126d8',
+        },
+        data: data
+      };
 
-    axios.request(config)
-      .then((response) => {
-        navigation.navigate('OrganizationWelcomeScreen');
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          navigation.navigate('OrganizationWelcomeScreen');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    } else {
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://127.0.0.1:3001/projects',
+        headers: {
+          'userid': '64d03d68b6d32edbc1c126d8',
+        },
+        data: data
+      };
+
+      axios.request(config)
+        .then((response) => {
+          navigation.navigate('OrganizationWelcomeScreen');
+        })
+        .catch((error) => {
+          console.log('Error:', error);
+        });
+    }
   };
 
-  const onEdit = (flag) => {
-    setShowReview(flag);
+  const onEdit = () => {
+    setShowReview(false);
   };
 
   const handleDateChange = (type, text) => {
@@ -106,12 +155,29 @@ const ProjectForm = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setLogo(result.uri);
     }
   };
+
+  const formatDate = (isoDate) => {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  let formTitle = 'Create a new project';
+  let imageLabel = 'Add image';
+  let buttonName = 'Create';
+
+  if (projectId) {
+    formTitle = 'Update a project';
+    imageLabel = 'Update image';
+    buttonName = 'Update';
+  }
 
   if (showReview) {
     return <ReviewProjectDetails
@@ -133,7 +199,7 @@ const ProjectForm = ({ navigation }) => {
     return (
       <ScrollView showsVerticalScrollIndicator={true}>
         <View style={styles.container}>
-          <Text style={styles.title}>Create a new project</Text>
+          <Text style={styles.title}>{formTitle}</Text>
 
           <Text style={styles.label}>Title <Text style={{
             color: 'red'
@@ -148,7 +214,7 @@ const ProjectForm = ({ navigation }) => {
             {logo && (
               <Image source={{ uri: logo }} style={styles.image} />
             )}
-            <Text style={styles.label}>Add Image &nbsp;</Text>
+            <Text style={styles.label}>{imageLabel} &nbsp;</Text>
             <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
           </TouchableOpacity>
 
@@ -246,11 +312,30 @@ const ProjectForm = ({ navigation }) => {
               },
             ]}
             onPress={() => {
+              const startDateParts = startDate.split('-');
+              const endDateParts = endDate.split('-');
+
+              const startDateObj = new Date(
+                parseInt(startDateParts[2]),
+                parseInt(startDateParts[1]) - 1,
+                parseInt(startDateParts[0])
+              );
+
+              const endDateObj = new Date(
+                parseInt(endDateParts[2]),
+                parseInt(endDateParts[1]) - 1,
+                parseInt(endDateParts[0])
+              );
+
+              if (endDateObj < startDateObj) {
+                Alert.alert('Error', 'End date cannot be smaller than start date');
+                return;
+              }
               setShowReview(true);
             }}
             disabled={!projectTitle}
           >
-            <Text style={styles.buttonText}>Create</Text>
+            <Text style={styles.buttonText}>{buttonName}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
