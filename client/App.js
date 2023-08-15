@@ -16,7 +16,7 @@ import OrganizationDetailsScreen from './components/volunteer/OrganizationDetail
 import ReviewScreen from './components/volunteer/ReviewScreen';
 import AccountDetailsScreen from './components/volunteer/AccountDetailsScreen';
 import ProjectDetailsScreen from './components/volunteer/ProjectDetailsScreen';
-// 
+//
 
 const Stack = createStackNavigator();
 
@@ -30,7 +30,7 @@ function App() {
         <Stack.Screen name="VolunteerSignup" component={VolunteerSignupScreen} />
         <Stack.Screen name="VolunteerWelcomeScreen" component={VolunteerWelcomeScreen} />
         <Stack.Screen name="OrganizationWelcomeScreen" component={OrganizationWelcomeScreen} />
-        <Stack.Screen name="CreateProjectForm" component={ProjectForm} />
+        <Stack.Screen name="ProjectForm" component={ProjectForm} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="ListOfProjectsScreen" component={ListOfProjectsScreen} />
         <Stack.Screen name="ListOfOrganizationsScreen" component={ListOfOrganizationsScreen} />
