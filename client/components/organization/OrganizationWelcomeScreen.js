@@ -1,5 +1,5 @@
 import React from 'react';
-const axios = require('axios');
+import axios, * as others from 'axios';
 import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
 
 import { fallbackImage, FILE_URL } from '../constants';
