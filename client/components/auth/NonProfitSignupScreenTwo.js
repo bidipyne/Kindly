@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } fro
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import { host } from '../constants';
 
 const NonProfitSignupScreenTwo = ({ navigation, route }) => {
   const [aboutUs, setAboutUs] = useState('');
@@ -38,7 +39,7 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
     }
 
     axios
-      .post('http://10.10.110.139:3001/sign-up', data)
+      .post(host+'/sign-up', data)
       .then((response) => {
         console.log(JSON.stringify(response.data));
         // You can handle the response here, for example, by redirecting to another screen

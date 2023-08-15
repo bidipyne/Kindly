@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import qs from 'qs';
+import { host } from '../constants';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -12,9 +13,6 @@ const LoginScreen = ({ navigation }) => {
       email: username, // Using the username from state, assuming it's the email
       password: password,
     });
-
-    //let host = process.env.EXPO_PUBLIC_HOST;
-    let host = 'http://10.10.110.139:3001';
 
     let config = {
       method: 'post',

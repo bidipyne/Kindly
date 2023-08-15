@@ -4,7 +4,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import ReviewProjectDetails from './ReviewProjectDetails';
 

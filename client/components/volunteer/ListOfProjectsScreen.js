@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import ProjectCard from './ProjectCard'; // Import the ProjectCard component
 import { useNavigation } from '@react-navigation/native';
+import { host } from '../constants';
 
 const ListOfProjectsScreen = () => {
   const [projectsData, setProjectsData] = useState([]);
@@ -12,7 +13,7 @@ const ListOfProjectsScreen = () => {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://10.10.110.139:3001/projects',
+      url: host+'/projects',
       headers: {},
     };
 

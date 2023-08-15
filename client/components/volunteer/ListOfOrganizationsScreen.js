@@ -3,6 +3,8 @@ import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import OrganizationCard from './OrganizationCard'; // Import the OrganizationCard component
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { host } from '../constants';
+
 
 const ListOfOrganizationsScreen = () => {
   const navigation = useNavigation();
@@ -12,7 +14,7 @@ const ListOfOrganizationsScreen = () => {
     // Fetch organizations data from the API
     const fetchOrganizationsData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:3001/organizations');
+        const response = await axios.get(host+'/organizations');
         setOrganizationsData(response.data);
       } catch (error) {
         console.log('Error fetching organizations data:', error);
