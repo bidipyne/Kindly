@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import OrganizationCard from './OrganizationCard'; // Import the OrganizationCard component
 import { useNavigation } from '@react-navigation/native';
-
-const organizationsData = [
-  {
-    id: '1',
-    name: 'Organization X',
-    image: require('../../assets/icon.png'),
-    reviews: []
-  },
-  {
-    id: '2',
-    name: 'Organization Y',
-    image: require('../../assets/icon.png'),
-    reviews: []
-  },
-  // Add more organization data here
-];
+import axios from 'axios';
 
 const ListOfOrganizationsScreen = () => {
   const navigation = useNavigation();
+  const [organizationsData, setOrganizationsData] = useState([]);
+
+  useEffect(() => {
+    // Fetch organizations data from the API
+    const fetchOrganizationsData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:3001/organizations');
+        setOrganizationsData(response.data);
+      } catch (error) {
+        console.log('Error fetching organizations data:', error);
+      }
+    };
+
+    fetchOrganizationsData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -31,7 +31,7 @@ const ListOfOrganizationsScreen = () => {
           <OrganizationCard
             organization={item}
             onPress={() => {
-              console.log("Item pressed", item); // Logging the item
+              console.log('Item pressed', item); // Logging the item
               navigation.navigate('OrganizationDetailsScreen', { organization: item });
             }}
           />
@@ -40,7 +40,6 @@ const ListOfOrganizationsScreen = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
