@@ -96,6 +96,15 @@ class ProjectController {
     }
   }
 
+  static async updateFields(item, fieldsToUpdate) {
+    for (const key in fieldsToUpdate) {
+      if (fieldsToUpdate[key] !== undefined) {
+        item[key] = fieldsToUpdate[key];
+      }
+    }
+    await item.save({ validateBeforeSave: false });
+  }
+
   static async updateProject(req, res, next) {
     try {
       const projectId = req.params.id;
@@ -110,17 +119,11 @@ class ProjectController {
         });
       }
 
-      project.title = title;
-      project.details = details;
-      project.startDate = startDate;
-      project.endDate = endDate;
-      project.status = status;
-      project.location = location;
-      project.contactInfo = contactInfo;
-      project.lookingFor = lookingFor;
-      project.profileImage = profileImage;
+      const fieldsToUpdate = {
+        title, details, startDate, endDate, status, location, contactInfo, lookingFor, profileImage
+      };
 
-      await project.save();
+      await ProjectController.updateFields(project, fieldsToUpdate);
 
       res.status(200).json({
         message: 'Project updated.',
@@ -132,6 +135,7 @@ class ProjectController {
       });
     }
   }
+
 
 
   static async deleteProject(req, res, next) {

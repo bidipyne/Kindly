@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native';
+const axios = require('axios');
+import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
 
-import { fallbackImage } from '../constants';
+import { fallbackImage, FILE_URL } from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
 const OrganizationWelcomeScreen = ({ navigation }) => {
@@ -9,27 +10,68 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
   const [projects, setProjects] = React.useState([]);
   const [organization, setOrganization] = React.useState('');
 
-  React.useEffect(() => {
-    getOrganizationProjects('64da75ad1284bb25ed2328b3')
-      .then((data) => {
-        setOrganization({
-          ...organization,
-          name: data?.data?.name
-        });
+  const fetchOrganizationProjects = async () => {
+    try {
+    const response = await getOrganizationProjects('64d03d68b6d32edbc1c126d8');
 
-        setProjects(data?.data?.projects);
-      })
-      .catch(console.log);
+    setOrganization({
+      ...organization,
+      name: response?.data?.name
+    });
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchOrganizationProjects();
   }, []);
 
   const handleCreateProject = () => {
     navigation.navigate('CreateProjectForm');
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.project}>
+  const handleDeleteProject = (projectId) => {
+    Alert.alert('Confirm Delete', 'Are you sure you want to delete this project?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          // Perform the delete operation
+          deleteProject(projectId);
+        },
+      },
+    ]);
+  };
+
+  const deleteProject = (projectId) => {
+    axios
+      .delete(`http://127.0.0.1:3001/projects/${projectId}`)
+      .then((response) => {
+        console.log('Project deleted:', response.data);
+        fetchOrganizationProjects();
+        // You might want to update your UI or state after successful deletion
+      })
+      .catch((error) => {
+        console.error('Error deleting project:', error);
+      });
+  };
+
+  const renderItem = ({ item }) => {
+    let imageUrl = fallbackImage;
+
+    if (item?.profileImage) {
+      imageUrl = `${FILE_URL}/${item.profileImage}`
+    }
+
+    return (
+      <View style={styles.project}>
       <Image
-        source={{ uri: item?.fullProfileImageUrl || fallbackImage }}
+        source={{ uri: imageUrl }}
         style={styles.image}
       />
       <View style={styles.projectDesc}>
@@ -49,7 +91,9 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
             }}>Edit</Text>
           </Pressable>
 
-          <Pressable>
+          <Pressable onPress={() => {
+            handleDeleteProject(item._id)
+          }}>
             <Text style={{
               color: '#009CE0',
               width: 50
@@ -58,7 +102,8 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
         </View>
       </View>
     </View>
-  );
+    )
+  }
 
   return (
     <View style={styles.container}>

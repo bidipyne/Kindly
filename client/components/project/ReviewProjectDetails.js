@@ -17,7 +17,7 @@ const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
       <Text>By: Organization name</Text>
 
       <Image
-        source={{ uri: formData?.fullProfileImageUrl || fallbackImage }}
+        source={{ uri: formData?.logo || fallbackImage }}
         style={styles.image}
       />
 
@@ -46,7 +46,7 @@ const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
         <Text>{formData.weNeed}</Text>
       </View>
 
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={onConfirm}>
         <Text style={styles.buttonText}>Publish</Text>
       </Pressable>
     </View>
