@@ -1,11 +1,15 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import qs from 'qs';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import ReviewProjectDetails from './ReviewProjectDetails';
 
 const ProjectForm = ({ navigation }) => {
+  const [logo, setLogo] = React.useState(null);
   const [projectTitle, setProjectTitle] = React.useState('');
   const [details, setDetails] = React.useState('');
   const [startDate, setStartDate] = React.useState('');
@@ -19,11 +23,81 @@ const ProjectForm = ({ navigation }) => {
 
   const handleSubmit = () => {
 
-  }
+    let data = new FormData();
+    data.append('title', projectTitle);
+    data.append('details', details);
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    data.append('status', status);
+    data.append('location', location);
+    data.append('contactInfo', contactInfo);
+    data.append('lookingFor', weNeed);
 
-  const onEdit = () => {
-    setShowReview(false);
-  }
+    if (logo) {
+      const fileUriParts = logo.split('.');
+      const fileType = fileUriParts[fileUriParts.length - 1];
+
+      data.append('profileImage', {
+        uri: logo,
+        name: `logo.${fileType}`,
+        type: `image/${fileType}`,
+      });
+    }
+
+    let config = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: 'http://127.0.0.1:3001/projects',
+      headers: {
+        'userid': '64d03d68b6d32edbc1c126d8',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+
+    axios.request(config)
+    .then((response) => {
+      console.log('Success: ', JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+    });
+  };
+
+  const onEdit = (flag) => {
+    setShowReview(flag);
+  };
+
+  const handleDateChange = (type, text) => {
+    const cleanedText = text.replace(/[^\d]/g, '');
+    console.log('t', type, text)
+
+    if (cleanedText.length >= 1 && cleanedText.length <= 8) {
+      let formattedText = cleanedText;
+
+      if (cleanedText.length >= 3) {
+        formattedText = `${formattedText.substring(0, 2)}-${formattedText.substring(2)}`;
+      }
+      if (cleanedText.length >= 5) {
+        formattedText = `${formattedText.substring(0, 5)}-${formattedText.substring(5)}`;
+      }
+      if (type === 'startDate') {
+        setStartDate(formattedText);
+      }
+
+      if (type === 'endDate') {
+        setEndDate(formattedText);
+      }
+    } else {
+      if (type === 'startDate') {
+        setStartDate('');
+      }
+
+      if (text === 'endDate') {
+        setEndDate('');
+      }
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,7 +109,7 @@ const ProjectForm = ({ navigation }) => {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setLogo(result.uri);
     }
   };
@@ -50,7 +124,8 @@ const ProjectForm = ({ navigation }) => {
         status,
         location,
         contactInfo,
-        weNeed
+        weNeed,
+        logo
       }}
       onConfirm={handleSubmit}
       onEdit={onEdit}
@@ -69,6 +144,9 @@ const ProjectForm = ({ navigation }) => {
           />
 
           <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
+            {logo && (
+              <Image source={{ uri: logo }} style={styles.image} />
+            )}
             <Text style={styles.label}>Add Image &nbsp;</Text>
             <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
           </TouchableOpacity>
@@ -88,8 +166,12 @@ const ProjectForm = ({ navigation }) => {
               <Text style={styles.label}>Start Date</Text>
               <TextInput
                 style={styles.dateInput}
-                onChangeText={text => setStartDate(text)}
+                placeholder="DD-MM-YYYY"
                 value={startDate}
+                maxLength={10}
+                onChangeText={(text) => {
+                  handleDateChange('startDate', text);
+                }}
               />
             </View>
             <View style={{
@@ -100,9 +182,14 @@ const ProjectForm = ({ navigation }) => {
               <Text style={styles.label}>End Date</Text>
               <TextInput
                 style={styles.dateInput}
-                onChangeText={text => setEndDate(text)}
+                placeholder="DD-MM-YYYY"
                 value={endDate}
+                maxLength={10}
+                onChangeText={(text) => {
+                  handleDateChange('endDate', text);
+                }}
               />
+
             </View>
           </View>
 
@@ -182,6 +269,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 10,
     color: '#000000',
+    fontWeight: '600'
   },
   input: {
     height: 48,
@@ -242,12 +330,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-end',
-    marginVertical: 10
+    marginVertical: 10,
   },
   dateContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  }
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginRight: 20,
+    borderRadius: 5
+  },
 });
 
 export default ProjectForm;
