@@ -18,6 +18,8 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
       ...organization,
       name: response?.data?.name
     });
+
+    setProjects(response?.data?.projects);
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
