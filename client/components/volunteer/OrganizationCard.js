@@ -51,6 +51,7 @@ const OrganizationCard = ({ organization, onPress }) => {
           <Text style={styles.seeProjectsText}>See Projects</Text>
         </TouchableOpacity>
       </View>
+      </View>
     </TouchableOpacity>
   );
 };
