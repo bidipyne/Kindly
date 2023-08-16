@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,33 @@ import {
   TouchableOpacity,
   ScrollView, Alert,
 } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import { host } from '../constants';
 
-const ProjectDetailsScreen = ({ route }) => {
-  const {
-    projectName,
-    organizationName,
-    projectImage,
-    details,
-    status,
-    location,
-    contactInfo,
-    need,
-  } = route.params;
+const ProjectDetailsScreen = () => {
+  const route = useRoute();
+  const { project } = route.params;
+  const [organizationName, setOrganizationName] = useState('');
+  const [organizationProfileImage, setOrganizationProfileImage] = useState(null);
+  const [organizationContact, setOrganizationContact] = useState('');
+  const [organizationLocation, setOrganizationLocation] = useState('');
+  
+  useEffect(() => {
+    // Fetch organization data based on project.organizationId
+    const fetchOrganization = async () => {
+      try {
+        const response = await axios.get(host+`/organizations/${project.organizationId}`);
+        setOrganizationName(response.data.data.name);
+        setOrganizationProfileImage(response.data.data.profileImage);
+        setOrganizationContact(response.data.data.contactInfo);
+        setOrganizationLocation(response.data.data.city+", "+response.data.data.province);
+      } catch (error) {
+        console.log('Error fetching organization:', error);
+      }
+    };
+    fetchOrganization();
+  }, [project.organizationId]);
 
    const handleVolunteer = () => {
     Alert.alert(
@@ -37,35 +52,41 @@ const ProjectDetailsScreen = ({ route }) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Project Details</Text>
-      <Text style={styles.subTitle}>Project Name: {projectName}</Text>
+      <Text style={styles.subTitle}>Project Name: {project.title}</Text>
       <Text style={styles.subTitle}>By: {organizationName}</Text>
-      <Image source={projectImage} style={styles.projectImage} />
+      <Image
+        source={{ uri: organizationProfileImage }} // Use the fetched profile image URL
+        style={styles.projectImage}
+      />
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Details:</Text>
-        <Text style={styles.text}>{details}</Text>
+        <Text style={styles.text}>{project.title}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Status:</Text>
-        <Text style={styles.text}>{status}</Text>
+        <Text style={styles.text}>{project.status}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Location:</Text>
-        <Text style={styles.text}>{location}</Text>
+        <Text style={styles.text}>{organizationLocation}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Contact Info:</Text>
-        <Text style={styles.text}>{contactInfo}</Text>
+        <Text style={styles.text}>{organizationContact}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Need:</Text>
-        <Text style={styles.text}>{need}</Text>
+        <Text style={styles.text}>{project.lookingFor}</Text>
       </View>
-      <TouchableOpacity style={styles.buttonVolunteer} onPress={handleVolunteer}>
-        <Text style={styles.buttonText}>Volunteer</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonDonate} onPress={handleDonate}>
-        <Text style={styles.buttonText}>Donate</Text>
-      </TouchableOpacity>
+      {project.lookingFor === 'Donations' ? (
+        <TouchableOpacity style={styles.buttonDonate} onPress={handleDonate}>
+          <Text style={styles.buttonText}>Donate</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.buttonVolunteer} onPress={handleVolunteer}>
+          <Text style={styles.buttonText}>Volunteer</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };

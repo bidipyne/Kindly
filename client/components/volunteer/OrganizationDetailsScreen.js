@@ -1,41 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Assuming you're using FontAwesome icons for rating
 import { useNavigation } from '@react-navigation/native';
+import { host } from '../constants';
+import axios from 'axios';
 
 const OrganizationDetailsScreen = ({ route }) => {
   const navigation = useNavigation();
   const { organization } = route.params;
+  const [userEmails, setUserEmails] = useState({});
 
   const handleLeaveReview = () => {
-   navigation.navigate('ReviewScreen'); // Replace with the actual screen name for LeaveReview
+   navigation.navigate('ReviewScreen', {
+    organizationId: organization._id, // Pass organization._id
+    userId: '64d40f4ebbf17628e207d48e', // Pass the logged-in user id
+  });
   };
+
+  // Fetch user data for all userIds in reviews when the component mounts
+  useEffect(() => {
+    const userIds = organization.reviews.map(review => review.userId);
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: host+'/users',
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        const userEmailMapping = {};
+        //console.log('Response :: '+JSON.stringify(response.data));
+        response.data.data.forEach(user => {
+          if (userIds.includes(user._id)) {
+            const email = user.email.split('@');
+            userEmailMapping[user._id] = email[0];
+          }
+        });
+        setUserEmails(userEmailMapping);
+      })
+      .catch((error) => {
+        console.log('Error fetching user data:', error);
+      });
+  }, []);
+
+  const calculateAverageRating = () => {
+    if (!organization.reviews || organization.reviews.length === 0) {
+      return 'N/A';
+    }
+
+    const totalRating = organization.reviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / organization.reviews.length;
+
+    // Ensure averageRating is a positive integer or return 0 if it's not valid
+    return isNaN(averageRating) || averageRating <= 0 ? 0 : Math.floor(averageRating);
+  };
+
+  const averageRating = calculateAverageRating();
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Organisation Details</Text>
       <Text style={styles.subtitle}>{organization.name}</Text>
-      {/* Rating */}
+      {/* Average Rating */}
       <View style={styles.rating}>
-        <Icon name="star" size={18} color="#FFD700" />
-        <Icon name="star" size={18} color="#FFD700" />
-        <Icon name="star" size={18} color="#FFD700" />
-        <Icon name="star" size={18} color="#FFD700" />
-        <Icon name="star" size={18} color="#FFD700" />
+        {averageRating === 'N/A' ? (
+          <Text>No Reviews</Text>
+        ) : (
+          [...Array(Math.floor(averageRating))].map((_, i) => (
+            <Icon key={i} name="star" size={18} color="#FFD700" />
+          ))
+        )}
       </View>
       {/* Organization Image */}
       <View style={styles.orgImageContainer}>
-        <Image source={organization.image} style={styles.orgImage} />
+        <Image source={organization.profileImage} style={styles.orgImage} />
       </View>
       {/* About Us */}
       <Text style={styles.sectionTitle}>About Us</Text>
       <Text style={styles.sectionText}>{organization.about}</Text>
       {/* Location */}
       <Text style={styles.sectionTitle}>Location</Text>
-      <Text style={styles.sectionText}>{organization.location}</Text>
+      <Text style={styles.sectionText}>{organization.city}, {organization.province}</Text>
       {/* Contact */}
       <Text style={styles.sectionTitle}>Contact</Text>
-      <Text style={styles.sectionText}>{organization.contact}</Text>
+      <Text style={styles.sectionText}>{organization.contactInfo}</Text>
       {/* Website */}
       <Text style={styles.sectionTitle}>Website</Text>
       <Text style={styles.sectionText}>{organization.website}</Text>
@@ -50,14 +100,16 @@ const OrganizationDetailsScreen = ({ route }) => {
       {organization.reviews.map((review, index) => (
         <View key={index} style={styles.reviewCard}>
           <View style={styles.reviewHeader}>
-            <Text style={styles.reviewUsername}>{review.username}</Text>
+            <Text style={styles.reviewUsername}>
+              {userEmails[review.userId] || 'Anonymous User'}
+            </Text>
             <View style={styles.rating}>
               {[...Array(review.rating)].map((_, i) => (
                 <Icon key={i} name="star" size={18} color="#FFD700" />
               ))}
             </View>
           </View>
-          <Text style={styles.reviewText}>{review.feedback}</Text>
+          <Text style={styles.reviewText}>{review.description}</Text>
         </View>
       ))}
     </ScrollView>
