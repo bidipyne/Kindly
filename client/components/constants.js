@@ -1,3 +1,3 @@
-export const fallbackImage = 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
+export const fallbackImage = 'https://png.pngtree.com/png-vector/20190917/ourmid/pngtree-not-found-outline-icon-vectors-png-image_1737857.jpg'
 export const FILE_URL = 'http://127.0.0.1:3001';
 export const host = 'http://127.0.0.1:3001';

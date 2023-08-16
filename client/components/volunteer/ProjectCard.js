@@ -3,12 +3,17 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { host } from '../constants';
+import { host, fallbackImage } from '../constants';
 
 const ProjectCard = ({ project }) => {
   const [organizationName, setOrganizationName] = useState('');
   const navigation = useNavigation();
 
+  const [imageUrl, setImageUrl] = React.useState(`${project?.fullProfileImageUrl}`);
+
+  const handleImageError = () => {
+    setImageUrl(null);
+  };
   const handlePress = () => {
     console.log("Project selected "+ JSON.stringify(project));
     navigation.navigate('ProjectDetailsScreen', { project });
@@ -19,7 +24,8 @@ const ProjectCard = ({ project }) => {
     const fetchOrganization = async () => {
       try {
         const response = await axios.get(host+`/organizations/${project.organizationId}`);
-        setOrganizationName(response.data.data.name);
+
+        setOrganizationName(response?.data?.data?.name);
       } catch (error) {
         console.log('Error fetching organization:', error);
       }
@@ -29,7 +35,20 @@ const ProjectCard = ({ project }) => {
 
   return (
     <View style={styles.card}>
-      <Image source={project.fullProfileImageUrl} style={styles.projectImage} />
+      {imageUrl ? (
+        <Image
+          source={{ uri: imageUrl }}
+          style={styles.projectImage}
+          onError={handleImageError}
+        />
+      ) : (
+        <Image
+          source={{
+            uri: fallbackImage
+          }}
+          style={styles.projectImage}
+        />
+      )}
       <View style={styles.cardContent}>
         <Text style={styles.projectName}>{project.title}</Text>
         <Text style={styles.organisation}>{organizationName}</Text>
@@ -53,9 +72,9 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#707070',
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 15,
     padding: 10,
     backgroundColor: '#fff',
   },
