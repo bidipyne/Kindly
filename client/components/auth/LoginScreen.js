@@ -72,7 +72,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.createAccountLink}
         onPress={() => navigation.navigate('Welcome')}
       >
-        Or create an account
+        Or, create an account?
       </Text>
     </View>
   );
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     position: 'absolute',
-    bottom: 450,
+    bottom: 400,
     left: 0,
     right: 0,
   },

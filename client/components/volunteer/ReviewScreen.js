@@ -8,12 +8,14 @@ import {
   Alert,
 } from 'react-native';
 import RatingPicker from './RatingPicker';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { host } from '../constants';
+
 
 const ReviewScreen = () => {
   const route = useRoute();
   const { organizationId, userId } = route.params;
+  const navigation = useNavigation();
 
   const [feedback, setFeedback] = useState('');
   const [rating, setRating] = useState('1');

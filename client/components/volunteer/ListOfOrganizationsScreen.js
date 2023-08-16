@@ -16,7 +16,7 @@ const ListOfOrganizationsScreen = () => {
       try {
         
         const response = await axios.get(host+'/organizations');
-        console.log(response.data);
+        console.log("Org :: "+JSON.stringify(response.data));
         setOrganizationsData(response.data.data);
       } catch (error) {
         console.log('Error fetching organizations data:', error);

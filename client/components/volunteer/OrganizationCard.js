@@ -1,8 +1,19 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Assuming you're using FontAwesome icons for rating
+import { useNavigation } from '@react-navigation/native';
 
 const OrganizationCard = ({ organization, onPress }) => {
+  const navigation = useNavigation(); 
+
+  const onSeeProjects = () => {
+  if (!organization.projects || organization.projects.length === 0) {
+    Alert.alert('No Projects', 'No projects added for this organization.');
+  } else {
+    navigation.navigate('ListOfProjectsScreen', { organization });
+  }
+};
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image source={organization.image} style={styles.orgImage} />
@@ -15,7 +26,7 @@ const OrganizationCard = ({ organization, onPress }) => {
           <Icon name="star" size={16} color="#FFD700" />
           <Icon name="star" size={16} color="#FFD700" />
         </View>
-        <TouchableOpacity style={styles.seeProjects}>
+        <TouchableOpacity style={styles.seeProjects} onPress={() => onSeeProjects(organization)}>
           <Text style={styles.seeProjectsText}>See Projects</Text>
         </TouchableOpacity>
       </View>
