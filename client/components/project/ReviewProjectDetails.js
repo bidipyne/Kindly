@@ -1,8 +1,5 @@
 import React from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import { Dropdown } from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 
 import { fallbackImage } from '../constants';
 
@@ -47,6 +44,10 @@ const ReviewProjectDetails = ({ formData, onConfirm, onEdit }) => {
         <Text style={styles.contentData}>{formData.weNeed}</Text>
       </View>
 
+      <Pressable style={styles.editButton} onPress={onEdit}>
+        <Text style={styles.buttonText}>Edit</Text>
+      </Pressable>
+
       <Pressable style={styles.button} onPress={onConfirm}>
         <Text style={styles.buttonText}>Publish</Text>
       </Pressable>
@@ -63,6 +64,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingBottom: 60,
     backgroundColor: '#FFFFFF',
+  },
+  editButton: {
+    marginTop: 30,
+    width: '100%',
+    padding: 10,
+    backgroundColor: '#38cb82',
+    borderRadius: 5,
+    height: 55,
+    justifyContent: 'center'
   },
   title: {
     fontSize: 29,
@@ -108,6 +118,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 30,
+    marginTop: 20,
     width: '100%',
     padding: 10,
     backgroundColor: '#009CE0',
@@ -117,7 +128,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '600',
     color: '#FFF',
     textAlign: 'center',
   },

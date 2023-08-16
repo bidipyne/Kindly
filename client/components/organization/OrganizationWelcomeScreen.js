@@ -2,8 +2,10 @@ import React from 'react';
 import axios, * as others from 'axios';
 import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { fallbackImage, FILE_URL } from '../constants';
+
+import { fallbackImage, FILE_URL, host} from '../constants';
 import { getOrganizationProjects } from '../api/organization';
 
 const OrganizationWelcomeScreen = ({ navigation }) => {
@@ -13,7 +15,9 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const fetchOrganizationProjects = async () => {
     try {
-    const response = await getOrganizationProjects('64d03d68b6d32edbc1c126d8');
+    const userId = await AsyncStorage.getItem('userId');
+
+    const response = await getOrganizationProjects(userId);
 
     setOrganization({
       ...organization,
@@ -29,10 +33,6 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
   React.useEffect(() => {
     fetchOrganizationProjects();
   }, [isFocused]);
-
-  const handleCreateProject = () => {
-    navigation.navigate('CreateProjectForm');
-  };
 
   const handleDeleteProject = (projectId) => {
     Alert.alert('Confirm Delete', 'Are you sure you want to delete this project?', [
@@ -53,7 +53,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const deleteProject = (projectId) => {
     axios
-      .delete(`http://127.0.0.1:3001/projects/${projectId}`)
+      .delete(`${host}/projects/${projectId}`)
       .then((response) => {
         console.log('Project deleted:', response.data);
         fetchOrganizationProjects();
@@ -68,7 +68,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
     let imageUrl = fallbackImage;
 
     if (item?.profileImage) {
-      imageUrl = `${FILE_URL}/${item.profileImage}`
+      imageUrl = `${host}/${item.profileImage}`
     }
 
     return (
@@ -87,7 +87,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
           }}>By: {organization.name}</Text>
         </View>
         <View style={styles.action}>
-          <Pressable onPress={() => navigation.navigate('CreateProjectForm')}>
+          <Pressable onPress={() => navigation.navigate('ProjectForm', { projectId: item._id })}>
             <Text style={{
               color: '#009CE0',
               width: 50
@@ -112,7 +112,7 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>Your Projects</Text>
-        <Pressable style={styles.button} onPress={handleCreateProject}>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('ProjectForm')}>
           <Text style={styles.buttonText}>Create Project</Text>
         </Pressable>
       </View>

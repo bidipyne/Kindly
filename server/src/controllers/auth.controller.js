@@ -129,7 +129,6 @@ class AuthController {
       res.status(500).send({ message: 'Server error.', error });
     }
   }
-
 }
 
 export default AuthController;

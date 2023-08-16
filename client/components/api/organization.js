@@ -1,4 +1,4 @@
-import { host } from '../constants'
+import { host } from '../constants';
 
 export async function getOrganizationProjects(orgId) {
   try {
