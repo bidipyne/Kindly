@@ -74,47 +74,53 @@ class OrganizationController {
     }
   }
 
-  //TODO: Only let review if a volunteer has volunteered with an organization.
-  static async reviewOrganization(req, res, next) {
-    try {
-      let organizationId = req.params.orgId;
-      let userId = req.headers['userid'];
-      const { rating, description } = req.body
+static async reviewOrganization(req, res, next) {
+  try {
+    const organizationId = req.params.orgId;
+    const userId = req.headers['userid'];
+    const { rating, description } = req.body;
 
-      const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId);
 
-      if (!user || user.userType !== VOLUNTEER) {
-        return res.status(400).json({
-          message: 'Restricted, User not found or not enough access.'
-        })
-      }
+    if (!user || user.userType !== VOLUNTEER) {
+      return res.status(400).json({
+        message: 'Restricted, User not found or not enough access.'
+      });
+    }
 
-      const organization = await OrganizationModel.findById(organizationId);
+    const organization = await OrganizationModel.findById(organizationId);
 
-      if (!organization) {
-        return res.status(400).json({
-          message: 'Organization not found'
-        })
-      }
+    if (!organization) {
+      return res.status(400).json({
+        message: 'Organization not found'
+      });
+    }
 
+    const existingReviewIndex = organization.reviews.findIndex(review => review.userId.toString() === userId);
 
+    if (existingReviewIndex !== -1) {
+      organization.reviews[existingReviewIndex].rating = rating;
+      organization.reviews[existingReviewIndex].description = description;
+    } else {
       organization.reviews.push({
         userId,
         rating,
         description
       });
-
-      await organization.save();
-
-      return res.json({
-        message: 'Review added.'
-      })
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error adding review' + error.message
-      })
     }
+
+    await organization.save();
+
+    return res.json({
+      message: 'Review added/updated.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error adding/updating review: ' + error.message
+    });
   }
+}
+
 }
 
 export default OrganizationController;
