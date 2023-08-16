@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Assuming you're using FontAwesome icons for rating
 
-import { host, fallbackImage } from '../constants'
+import { host } from '../constants'
+import { getRandomMediumDarkColor } from '../api/helpers'
 
 const OrganizationCard = ({ organization, onPress }) => {
   const [imageUrl, setImageUrl] = React.useState(`${host}/${organization?.profileImage}`);
@@ -20,12 +21,10 @@ const OrganizationCard = ({ organization, onPress }) => {
           onError={handleImageError}
         />
       ) : (
-        <Image
-          source={{
-            uri: fallbackImage
-          }}
-          style={styles.orgImage}
-        />
+        <View
+          style={{ ...styles.orgImage, backgroundColor: getRandomMediumDarkColor() }}
+        >
+        </View>
       )}
       <View style={styles.cardContent}>
         <View>
@@ -60,7 +59,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginRight: 10,
-    borderRadius: 5,
   },
   cardContent: {
     flex: 1,

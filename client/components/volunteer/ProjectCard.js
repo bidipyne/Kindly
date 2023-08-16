@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { host, fallbackImage } from '../constants';
+import { getRandomMediumDarkColor } from '../api/helpers';
 
 const ProjectCard = ({ project }) => {
   const [organizationName, setOrganizationName] = useState('');
@@ -15,7 +16,7 @@ const ProjectCard = ({ project }) => {
     setImageUrl(null);
   };
   const handlePress = () => {
-    console.log("Project selected "+ JSON.stringify(project));
+    console.log("Project selected " + JSON.stringify(project));
     navigation.navigate('ProjectDetailsScreen', { project });
   };
 
@@ -23,7 +24,7 @@ const ProjectCard = ({ project }) => {
     // Fetch organization data based on project.organizationId
     const fetchOrganization = async () => {
       try {
-        const response = await axios.get(host+`/organizations/${project.organizationId}`);
+        const response = await axios.get(host + `/organizations/${project.organizationId}`);
 
         setOrganizationName(response?.data?.data?.name);
       } catch (error) {
@@ -42,12 +43,10 @@ const ProjectCard = ({ project }) => {
           onError={handleImageError}
         />
       ) : (
-        <Image
-          source={{
-            uri: fallbackImage
-          }}
-          style={styles.projectImage}
-        />
+        <View
+          style={{ ...styles.projectImage, backgroundColor: getRandomMediumDarkColor() }}
+        >
+        </View>
       )}
       <View style={styles.cardContent}>
         <Text style={styles.projectName}>{project.title}</Text>
@@ -79,10 +78,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   projectImage: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     marginRight: 10,
-    borderRadius: 5,
   },
   cardContent: {
     flex: 1,
