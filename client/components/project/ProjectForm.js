@@ -4,9 +4,11 @@ import axios from 'axios';
 import { Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import ReviewProjectDetails from './ReviewProjectDetails';
+
 import { host } from '../constants'
+import ReviewProjectDetails from './ReviewProjectDetails';
 
 const ProjectForm = ({ navigation, route }) => {
   const [logo, setLogo] = React.useState(null);
@@ -50,7 +52,8 @@ const ProjectForm = ({ navigation, route }) => {
     }
   }, [projectId]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const userId = await AsyncStorage.getItem('userId');
 
     let data = new FormData();
     data.append('title', projectTitle);
@@ -79,7 +82,7 @@ const ProjectForm = ({ navigation, route }) => {
         maxBodyLength: Infinity,
         url: `${host}/projects/${projectId}`,
         headers: {
-          'userid': '64d03d68b6d32edbc1c126d8',
+          'userid': userId,
         },
         data: data
       };
@@ -99,7 +102,7 @@ const ProjectForm = ({ navigation, route }) => {
         maxBodyLength: Infinity,
         url: `${host}/projects`,
         headers: {
-          'userid': '64d03d68b6d32edbc1c126d8',
+          'userid': userId,
         },
         data: data
       };

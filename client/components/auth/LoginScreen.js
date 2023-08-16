@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
 import qs from 'qs';
+import axios from 'axios';
+import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+
 import { host } from '../constants';
 
 const LoginScreen = ({ navigation }) => {
@@ -17,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: host+'/login',
+      url: host + '/login',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -25,15 +27,19 @@ const LoginScreen = ({ navigation }) => {
     };
 
     axios.request(config)
-      .then((response) => {
+      .then(async (response) => {
         console.log(JSON.stringify(response.data));
-        let userType = response.data.data.userType;
-        console.log(userType);
-        if(userType == 'volunteer') {
+
+        let user = response?.data?.data;
+
+        console.log(user.userType);
+        if (user.userType == 'volunteer') {
           navigation.navigate('VolunteerWelcomeScreen');
-        } else if(userType == 'organization') {
+        } else if (user.userType == 'organization') {
           navigation.navigate('OrganizationWelcomeScreen');
         }
+
+        await AsyncStorage.setItem('userId', user._id);
 
         // You can handle the response here, for example, by redirecting to another screen
       })
@@ -41,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
         console.log(error);
         // You can handle errors here, for example, by showing an error message
       });
-  }
+  };
 
   return (
     <View style={styles.container}>

@@ -19,10 +19,13 @@ const VolunteerWelcomeScreen = () => {
       <Text style={styles.title}>Welcome to Kindly!</Text>
       <Text style={styles.subtitle}>Search ways to help by:</Text>
 
+      <View style={{
+        marginTop: 40
+      }}>
       <View style={styles.cardRow}>
         <TouchableOpacity style={styles.card} onPress={handleProjectsPress}>
           <View style={styles.cardContent}>
-            <Icon name="project-diagram" size={50} color="#000" />
+            <Icon name="clipboard-list" size={35} color="#000" />
             <Text style={styles.cardText}>Projects</Text>
           </View>
         </TouchableOpacity>
@@ -30,10 +33,11 @@ const VolunteerWelcomeScreen = () => {
       <View style={styles.cardRow}>
         <TouchableOpacity style={styles.card} onPress={handleOrganizationsPress}>
           <View style={styles.cardContent}>
-            <Icon name="building" size={50} color="#000" />
+            <Icon name="building" size={35} color="#000" />
             <Text style={styles.cardText}>Organisations</Text>
           </View>
         </TouchableOpacity>
+      </View>
       </View>
 
       <Text style={styles.featuredTitle}>Featured Project</Text>
@@ -65,6 +69,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     padding: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#000000',
     marginLeft: 20,
     marginTop: 30,
@@ -84,41 +90,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 10,
-    marginTop: 30,
   },
   card: {
-    borderColor: '#000',
+    borderColor: '#707070',
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
-    alignItems: 'center',
-    width: '80%',
+    width: '90%',
   },
   cardContent: {
+    marginLeft: 20,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   cardText: {
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 25,
     color: '#000',
-    marginLeft: 10,
+    marginLeft: 30,
   },
   featuredTitle: {
-    fontSize: 24,
+    fontSize: 16,
     color: '#000000',
     marginTop: 20,
     marginBottom: 10,
     marginLeft: 20,
   },
   featuredCard: {
-    borderColor: '#000',
+    borderColor: '#707070',
     borderWidth: 1,
     borderRadius: 10,
     width: '48%',
     marginRight: '2%',
     marginBottom: 20,
     overflow: 'hidden',
+    width: '90%'
   },
   featuredImage: {
     width: '100%',

@@ -33,13 +33,11 @@ const AccountDetailsScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Account Details</Text>
       <Text style={styles.subtitle}>Edit profile information</Text>
-      
-      {/* Profile Image */}
+
       <TouchableOpacity onPress={handleEditProfileImage} style={styles.imageContainer}>
         <Image source={{ uri: profileImage }} style={styles.profileImage} />
       </TouchableOpacity>
 
-      {/* Full Name */}
       <Text style={styles.label}>Full Name</Text>
       <TextInput
         style={styles.input}
@@ -47,7 +45,6 @@ const AccountDetailsScreen = () => {
         value={fullName}
       />
 
-      {/* Email */}
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
@@ -55,15 +52,13 @@ const AccountDetailsScreen = () => {
         value={email}
       />
 
-      {/* State / Province */}
-      <Text style={styles.label}>State / Province</Text>
+      <Text style={styles.label}>State/Province</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setStateProvince(text)}
         value={stateProvince}
       />
 
-      {/* City */}
       <Text style={styles.label}>City</Text>
       <TextInput
         style={styles.input}
@@ -71,7 +66,6 @@ const AccountDetailsScreen = () => {
         value={city}
       />
 
-      {/* Save Button */}
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
@@ -88,15 +82,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
     backgroundColor: '#FFFFFF',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 29,
+    marginVertical: 20,
+    fontWeight: '500',
+    color: '#000000',
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 20,
   },
   imageContainer: {
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    marginLeft: 5,
+    marginBottom: 5,
     marginTop: 10,
     color: '#000000',
   },

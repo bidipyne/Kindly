@@ -2,6 +2,8 @@ import React from 'react';
 import axios, * as others from 'axios';
 import { View, Text, StyleSheet, Pressable, FlatList, Image, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import { fallbackImage, FILE_URL, host} from '../constants';
 import { getOrganizationProjects } from '../api/organization';
@@ -13,7 +15,9 @@ const OrganizationWelcomeScreen = ({ navigation }) => {
 
   const fetchOrganizationProjects = async () => {
     try {
-    const response = await getOrganizationProjects('64d03d68b6d32edbc1c126d8');
+    const userId = await AsyncStorage.getItem('userId');
+
+    const response = await getOrganizationProjects(userId);
 
     setOrganization({
       ...organization,
