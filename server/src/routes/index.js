@@ -32,7 +32,7 @@ export default class Route {
     app.post("/login", AuthController.login);
     app.post("/sign-up", upload.single('profileImage'), AuthController.signup);
     app.use("/common", this.commonRoute.router);
-    app.use("/users", this.userRoute.router);
+    app.use("/users", upload.single('profileImage'), this.userRoute.router);
     app.use("/projects", this.projectRoute.router);
     app.use("/organizations", this.organizationRoute.router);
     app.use(this.noRouteHandler);

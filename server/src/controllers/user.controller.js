@@ -65,7 +65,7 @@ class UserController {
   static async updateUser(req, res, next) {
     try {
       const { id } = req.params;
-      let {
+      const {
         email,
         password,
         userType,
@@ -85,15 +85,15 @@ class UserController {
       const user = await UserModel.findById(id);
 
       if (!user) {
-        res.status(400).json({
+        return res.status(400).json({
           message: 'User not found.'
         });
       }
 
       let userData;
 
-      if (user.userType === ORGANIZATION) {
-        let organizationData = {
+      if (user.userType === 'organization') {
+        let updateData = {
           name,
           charityNumber,
           province,
@@ -105,17 +105,14 @@ class UserController {
           profileImage,
         };
 
-        const organization = new OrganizationModel({
-          ...organizationData,
-        });
 
-        userData = organization;
 
-        await organization.save();
-      }
+        // Remove undefined or null properties from the updateData
+        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
-      if (userType === VOLUNTEER) {
-        let volunteerData = {
+        userData = await OrganizationModel.findByIdAndUpdate(id, updateData, { new: true });
+      } else if (user.userType === 'volunteer') {
+        let updateData = {
           fullName,
           province,
           city,
@@ -123,24 +120,24 @@ class UserController {
           profileImage,
         };
 
-        const volunteer = new VolunteerModel({
-          ...volunteerData
-        });
+        // Remove undefined or null properties from the updateData
+        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
-        userData = volunteer;
-
-        await volunteer.save();
+        userData = await VolunteerModel.findByIdAndUpdate(id, updateData, { new: true });
+      } else {
+        return res.status(400).json({ message: 'Invalid userType.' });
       }
 
       return res.status(200).send({
-        message: userType === "organization" ? "Organization updated!" : "Volunteer updated!",
+        message: user.userType === 'organization' ? 'Organization updated!' : 'Volunteer updated!',
         data: userData,
       });
 
     } catch (error) {
-      return res.status(500).json({ message: "An error occurred.", error: error.message });
+      return res.status(500).json({ message: 'An error occurred.', error: error.message });
     }
   }
+
 
   static async deleteUser(req, res, next) {
     const userId = req.params.id;
