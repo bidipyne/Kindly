@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import ProjectCard from './ProjectCard'; // Import the ProjectCard component
-import { useNavigation } from '@react-navigation/native';
 import { host } from '../constants';
 
 const ListOfProjectsScreen = () => {
   const [projectsData, setProjectsData] = useState([]);
-  const navigation = useNavigation();
 
   useEffect(() => {
     let config = {
@@ -37,12 +35,7 @@ const ListOfProjectsScreen = () => {
         keyExtractor={(item) => item.id.toString()} // Assuming the id is a number
         renderItem={({ item }) => (
           <ProjectCard
-            project={item}
-            onPress={() => {
-              console.log('Item pressed', item); // Logging the item
-              navigation.navigate('ProjectDetailsScreen', { project: item });
-            }}
-          />
+            project={item} />
         )}
       />
     </View>

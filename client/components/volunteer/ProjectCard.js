@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { host } from '../constants';
 
-const ProjectCard = ({ project, onPress }) => {
+const ProjectCard = ({ project }) => {
+  const [organizationName, setOrganizationName] = useState('');
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    console.log("Project selected "+ JSON.stringify(project));
+    navigation.navigate('ProjectDetailsScreen', { project });
+  };
+
+  useEffect(() => {
+    // Fetch organization data based on project.organizationId
+    const fetchOrganization = async () => {
+      try {
+        const response = await axios.get(host+`/organizations/${project.organizationId}`);
+        setOrganizationName(response.data.data.name);
+      } catch (error) {
+        console.log('Error fetching organization:', error);
+      }
+    };
+    fetchOrganization();
+  }, [project.organizationId]);
+
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <View style={styles.card}>
       <Image source={project.fullProfileImageUrl} style={styles.projectImage} />
       <View style={styles.cardContent}>
         <Text style={styles.projectName}>{project.title}</Text>
-        <Text style={styles.organisation}>{project.organizationId}</Text>
+        <Text style={styles.organisation}>{organizationName}</Text>
         {/* Add Rating Component Here */}
         <View style={styles.rating}>
           <Icon name="star" size={16} color="#FFD700" />
@@ -17,11 +41,11 @@ const ProjectCard = ({ project, onPress }) => {
           <Icon name="star" size={16} color="#FFD700" />
           <Icon name="star" size={16} color="#FFD700" />
         </View>
-        <TouchableOpacity style={styles.seeDetails}>
+        <TouchableOpacity style={styles.seeDetails} onPress={handlePress}>
           <Text style={styles.seeDetailsText}>See Details</Text>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
