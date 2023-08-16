@@ -52,13 +52,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
   title: {
     fontSize: 30,
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
-    marginLeft: 20,
-    marginTop: 2,
+    marginVertical: 30,
   },
   noProjectsText: {
     fontSize: 16,

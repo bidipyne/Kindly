@@ -5,11 +5,14 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import { host } from '../constants';
 
 const HeaderIcon = ({ onPress }) => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
   const [user, setUser] = React.useState('');
   const [tooltipVisible, setTooltipVisible] = React.useState(false);
 
@@ -17,10 +20,11 @@ const HeaderIcon = ({ onPress }) => {
     setTooltipVisible(!tooltipVisible);
   };
 
-  const openAccountScreen = () => {
-    setTooltipVisible(false);
+  const openAccountScreen = async () => {
+    let userId = await AsyncStorage.getItem('userId');
 
-    navigation.navigate('AccountDetailsScreen');
+    setTooltipVisible(false);
+    navigation.navigate('AccountDetailsScreen', { userId });
   };
 
   const logout = async () => {
@@ -36,7 +40,7 @@ const HeaderIcon = ({ onPress }) => {
 
   React.useEffect(() => {
     fetchLoggedInUser();
-  }, []);
+  }, [isFocused]);
 
   const fetchLoggedInUser = async () => {
     const userId = await AsyncStorage.getItem('userId');
@@ -63,9 +67,9 @@ const HeaderIcon = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profile} onPress={toggleTooltip}>
-        {user.fullProfileImageUrl ? (
+        {user?.fullProfileImageUrl ? (
           <Image
-            source={{ uri: user.fullProfileImageUrl }}
+            source={{ uri: user?.fullProfileImageUrl }}
             style={styles.image}
           />
         ) : (
@@ -113,10 +117,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   initials: {
-    color: '#ffff',
-    backgroundColor: '#009CE0',
+    color: '#009CE0',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
   },
   container: {
     flex: 1,

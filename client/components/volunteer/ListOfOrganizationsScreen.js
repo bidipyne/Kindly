@@ -14,7 +14,7 @@ const ListOfOrganizationsScreen = () => {
     // Fetch organizations data from the API
     const fetchOrganizationsData = async () => {
       try {
-        
+
         const response = await axios.get(host+'/organizations');
         console.log("Org :: "+JSON.stringify(response.data));
         setOrganizationsData(response.data.data);
@@ -51,11 +51,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFFFFF',
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
   title: {
     fontSize: 30,
     fontWeight: 'regular',
-    marginBottom: 10,
+    marginVertical: 30,
   },
 });
 

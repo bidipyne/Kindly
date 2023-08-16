@@ -40,6 +40,7 @@ const LoginScreen = ({ navigation }) => {
         }
 
         await AsyncStorage.setItem('userId', user._id);
+        await AsyncStorage.setItem('userType', user.userType);
 
         // You can handle the response here, for example, by redirecting to another screen
       })

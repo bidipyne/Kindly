@@ -6,27 +6,133 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
-const AccountDetailsScreen = () => {
+import { host } from '../constants';
+
+const AccountDetailsScreen = ({ navigation, route }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [stateProvince, setStateProvince] = useState('');
   const [city, setCity] = useState('');
+  const [userType, setUserType] = React.useState('');
+  const [fullProfileImageUrl, setFullProfileImageUrl] = React.useState('');
 
-  // Dummy profile image URL, replace it with user's actual profile image URL
-  const [profileImage, setProfileImage] = useState('https://example.com/profile-image.jpg');
+  React.useEffect(() => {
+    fetchUser();
+  }, []);
 
-  const handleSave = () => {
-    // Handle save operation
+  const fetchUser = async () => {
+    let userId = await AsyncStorage.getItem('userId');
+
+    try {
+      let response = await fetch(`${host}/users/${userId}`);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const { data } = await response.json();
+
+      setFullName(data.name || data.fullName);
+      setEmail(data.email);
+      setStateProvince(data.province);
+      setCity(data.city);
+      setUserType(data.userType);
+      setFullProfileImageUrl(data.fullProfileImageUrl)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    let userId = await AsyncStorage.getItem('userId');
+
+    let data = new FormData();
+
+    if (userType === 'volunteer') {
+      data.append('fullName', fullName);
+    } else {
+      data.append('name', fullName)
+    }
+    data.append('province', stateProvince);
+    data.append('city', city);
+
+    if (fullProfileImageUrl) {
+      const fileUriParts = fullProfileImageUrl.split('.');
+      const fileType = fileUriParts[fileUriParts.length - 1];
+
+      data.append('profileImage', {
+        uri: fullProfileImageUrl,
+        name: `fullProfileImageUrl.${fileType}`,
+        type: `image/${fileType}`,
+      });
+    }
+
+    let config = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: `${host}/users/${userId}`,
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        navigation.goBack();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleDeleteAccount = () => {
-    // Handle delete account operation
+    Alert.alert('Confirm Delete', 'Are you sure you want to delete your account?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          deleteUser();
+        },
+      },
+    ]);
   };
 
-  const handleEditProfileImage = () => {
-    // Handle edit profile image operation
+  const deleteUser = async () => {
+    let userId = await AsyncStorage.getItem('userId');
+
+    axios
+      .delete(`${host}/users/${userId}`)
+      .then((response) => {
+        console.log('Account deleted:', response.data);
+       navigation.navigate('LoginScreen');
+      })
+      .catch((error) => {
+        console.error('Error deleting account:', error);
+      });
+  };
+
+
+  const handleEditProfileImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFullProfileImageUrl(result.uri);
+    }
   };
 
   return (
@@ -34,8 +140,24 @@ const AccountDetailsScreen = () => {
       <Text style={styles.title}>Account Details</Text>
       <Text style={styles.subtitle}>Edit profile information</Text>
 
-      <TouchableOpacity onPress={handleEditProfileImage} style={styles.imageContainer}>
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+      <TouchableOpacity style={styles.imageContainer} onPress={handleEditProfileImage}>
+        {fullProfileImageUrl ? (
+          <Image
+            source={{ uri: fullProfileImageUrl }}
+            style={styles.profileImage}
+          />
+        ) : (
+          <View style={styles.initials}>
+            <Text style={styles.nameText}>
+              {(fullName)?.substring(0, 2)?.toUpperCase()}
+            </Text>
+          </View>
+        )}
+         <Icon style={{
+          left: 30,
+          bottom: 40,
+          zIndex: 111
+         }} name="camera" size={30} color="#000" />
       </TouchableOpacity>
 
       <Text style={styles.label}>Full Name</Text>
@@ -47,8 +169,10 @@ const AccountDetailsScreen = () => {
 
       <Text style={styles.label}>Email</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={text => setEmail(text)}
+        style={styles.disabledInput}
+        // onChangeText={text => setEmail(text)}
+        contextMenuHidden={true}
+        editable={false}
         value={email}
       />
 
@@ -103,6 +227,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: 100,
+    borderWidth: 2,
     height: 100,
     borderRadius: 50,
   },
@@ -120,6 +245,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 10,
   },
+  disabledInput: {
+    height: 48,
+    borderColor: '#C4C4C4',
+    borderWidth: 1,
+    paddingLeft: 8,
+    marginBottom: 16,
+    borderRadius: 10,
+    color: 'grey'
+  },
   saveButton: {
     backgroundColor: '#009CE0',
     padding: 10,
@@ -133,9 +267,24 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '500',
     color: '#FFF',
     textAlign: 'center',
   },
+  initials: {
+    marginVertical: 10,
+    borderWidth: 2,
+    height: 100,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
+  nameText: {
+    color: '#009CE0',
+    fontWeight: 'bold',
+    fontSize: 40,
+  }
 });
 
 export default AccountDetailsScreen;

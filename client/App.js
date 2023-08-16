@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WelcomeScreen from './components/WelcomeScreen';
 import LoginScreen from './components/auth/LoginScreen';
@@ -23,9 +24,28 @@ const Stack = createStackNavigator();
 const routesToHideHeaderRight = ['Welcome', 'LoginScreen', 'NonProfitSignupScreenOne', 'NonProfitSignupScreenTwo', 'VolunteerSignup'];
 
 function App() {
+  const [initialScreen, setInitialScreen] = React.useState('Welcome');
+
+  React.useEffect(() => {
+    async function checkUserAndSetInitialScreen() {
+      let userId = await AsyncStorage.getItem('userId');
+      let userType = await AsyncStorage.getItem('userType');
+
+      if (userId && userType === 'volunteer') {
+        setInitialScreen('VolunteerWelcomeScreen');
+      }
+
+      if (userId && userType === 'organization') {
+        setInitialScreen('OrganizationWelcomeScreen');
+      }
+    }
+
+    checkUserAndSetInitialScreen();
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome"
+      <Stack.Navigator initialRouteName={initialScreen}
         screenOptions={({ route }) => ({
           headerRight: () => (routesToHideHeaderRight.includes(route.name) ? null : <GlobalHeaderRight />)
         })}
