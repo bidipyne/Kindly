@@ -26,15 +26,21 @@ const ReviewScreen = () => {
     } else {
       var myHeaders = new Headers();
       myHeaders.append("userid", userId);
+      myHeaders.append("Content-Type", "application/json");
 
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("rating", rating);
-      urlencoded.append("description", feedback);
+      console.log("rating ", rating);
+      console.log("feedback ", feedback);
+
+      var raw = JSON.stringify({
+        "rating": rating,
+        "description": feedback
+      });
+
 
       var requestOptions = {
         method: 'PUT',
         headers: myHeaders,
-        body: urlencoded,
+        body: raw,
         redirect: 'follow'
       };
 
@@ -42,10 +48,11 @@ const ReviewScreen = () => {
       console.log("organizationId passed "+ organizationId);
 
       fetch(host+"/organizations/"+organizationId+"/review", requestOptions)
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => {
-          console.log("result" + result);
+          console.log("result organization " + result.organization);
           Alert.alert('Success', 'Your review has been posted');
+          navigation.navigate("OrganizationDetailsScreen", {organization: result.organization});
         })
         .catch(error => console.log('error', error));
 
