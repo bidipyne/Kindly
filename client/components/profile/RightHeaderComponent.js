@@ -74,7 +74,7 @@ const HeaderIcon = ({ onPress }) => {
           />
         ) : (
           <Text style={styles.initials}>
-            {(user.name || user.fullName)?.substring(0, 2)?.toUpperCase()}
+            {(user?.name || user?.fullName)?.substring(0, 2)?.toUpperCase()}
           </Text>
         )}
       </TouchableOpacity>
