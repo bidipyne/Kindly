@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
@@ -75,59 +75,64 @@ const VolunteerSignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create your account</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={true}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Create your account</Text>
 
-      <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
-        <Text style={styles.label}>Upload your avatar</Text>
-        <Icon name="image" size={30} color="#000" />
-      </TouchableOpacity>
-      {avatar && <Image source={{ uri: avatar }} style={styles.avatar} />}
+        <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
+          <Text style={styles.label}>Upload your avatar</Text>
+          <Icon name="image" size={30} color="#000" />
+        </TouchableOpacity>
+        {avatar && <Image source={{ uri: avatar }} style={styles.avatar} />}
 
-      <Text style={styles.label}>Full Name</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setFullName(text)}
-        value={fullName}
-      />
+        <Text style={styles.label}>Full Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setFullName(text)}
+          value={fullName}
+        />
 
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setEmail(text)}
-        value={email}
-      />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setEmail(text)}
+          value={email}
+        />
 
-      <Text style={styles.label}>State / Province</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setState(text)}
-        value={state}
-      />
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setPassword(text)}
+          value={password}
+          secureTextEntry
+        />
 
-      <Text style={styles.label}>City</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setCity(text)}
-        value={city}
-      />
+        <Text style={styles.label}>State / Province</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setState(text)}
+          value={state}
+        />
 
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setPassword(text)}
-        value={password}
-        secureTextEntry
-      />
+        <Text style={styles.label}>City</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setCity(text)}
+          value={city}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Create</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Create</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',

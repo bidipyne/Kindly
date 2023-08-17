@@ -67,6 +67,7 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
       <Text style={styles.title}>Submit your logo</Text>
 
@@ -111,10 +112,14 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
         <Text style={styles.buttonText}>Save and Create</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',

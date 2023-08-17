@@ -21,6 +21,18 @@ const ProjectCard = ({ project }) => {
     navigation.navigate('ProjectDetailsScreen', { project });
   };
 
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 0; i < averageRating; i++) {
+      stars.push(
+        <Icon key={i} name="star" size={16} color="#FFD700" />
+      );
+    }
+
+    return stars;
+  };
+
   useEffect(() => {
     // Fetch organization data based on project.organizationId
     const fetchOrganization = async () => {
@@ -68,11 +80,7 @@ const ProjectCard = ({ project }) => {
         <Text style={styles.organisation}>By: {organizationName}</Text>
         {/* Add Rating Component Here */}
         <View style={styles.rating}>
-          <Icon name="star" size={16} color="#FFD700" />
-          <Icon name="star" size={16} color="#FFD700" />
-          <Icon name="star" size={16} color="#FFD700" />
-          <Icon name="star" size={16} color="#FFD700" />
-          <Icon name="star" size={16} color="#FFD700" />
+          {renderStars()}
         </View>
         <TouchableOpacity style={styles.seeDetails} onPress={handlePress}>
           <Text style={styles.seeDetailsText}>See Details</Text>

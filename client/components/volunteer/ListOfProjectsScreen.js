@@ -4,13 +4,15 @@ import axios from 'axios';
 import ProjectCard from './ProjectCard'; // Import the ProjectCard component
 import { host } from '../constants';
 
-const ListOfProjectsScreen = (route) => {
+const ListOfProjectsScreen = ({route}) => {
   const { organization } = route.params || {}; // Use empty object if organization is not provided
   const [projectsData, setProjectsData] = useState([]);
+  console.log("params "+ route.params);
 
   useEffect(() => {
-
-    if (organization && organization.projects && organization.projects.length > 0) {
+    console.log("See org projects"+ JSON.stringify(organization, null, 2));
+    //console.log(Object.keys(organization));
+    if (organization && organization?.projects && organization?.projects.length > 0) {
       // Fetch projects associated with the organization
       setProjectsData(organization.projects);
     } else {
@@ -34,7 +36,7 @@ const ListOfProjectsScreen = (route) => {
       {projectsData.length > 0 ? (
         <FlatList
           data={projectsData}
-          keyExtractor={(item) => item.id.toString()} // Assuming the id is a number
+          keyExtractor={(item) => item.id} // Assuming the id is a number
           renderItem={({ item }) => (
             <ProjectCard
               key={item._id}

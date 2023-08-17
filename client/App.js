@@ -77,7 +77,7 @@ function App() {
           title: "Account Details"
         }} component={AccountDetailsScreen} />
         <Stack.Screen name="VolunteerWelcomeScreen" options={{
-          title: "Volunteer Dashboard"
+          title: "Volunteer Dashboard", headerLeft: null
         }} component={VolunteerWelcomeScreen} />
         <Stack.Screen name="NonProfitSignupScreenOne" options={{
           title: "NonProfit Signup"
@@ -86,7 +86,7 @@ function App() {
           title: "NonProfit Signup"
         }} component={NonProfitSignupScreenTwo} />
         <Stack.Screen name="OrganizationWelcomeScreen" options={{
-          title: "Organization Dashboard"
+          title: "Organization Dashboard", headerLeft: null
         }} component={OrganizationWelcomeScreen} />
         <Stack.Screen name="ListOfOrganizationsScreen" options={{
           title: "Organization List"

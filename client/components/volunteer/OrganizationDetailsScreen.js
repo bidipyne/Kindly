@@ -90,9 +90,6 @@ const OrganizationDetailsScreen = ({ route }) => {
       <View style={styles.orgImageContainer}>
         <Image source={{ uri:  host+'/'+organization.profileImage}} style={styles.orgImage} />
       </View>
-      {/* About Us */}
-      <Text style={styles.sectionTitle}>About Us</Text>
-      <Text style={styles.sectionText}>{organization.about}</Text>
       {/* Location */}
       <Text style={styles.sectionTitle}>Location</Text>
       <Text style={styles.sectionText}>{organization.city}, {organization.province}</Text>

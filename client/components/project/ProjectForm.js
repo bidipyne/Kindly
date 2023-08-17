@@ -106,6 +106,7 @@ const ProjectForm = ({ navigation, route }) => {
         },
         data: data
       };
+      console.log('config ' +JSON.stringify(config));
 
       axios.request(config)
         .then((response) => {

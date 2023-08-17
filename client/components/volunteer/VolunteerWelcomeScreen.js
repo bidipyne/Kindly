@@ -46,7 +46,7 @@ const VolunteerWelcomeScreen = () => {
       <View style={styles.cardRow}>
         <TouchableOpacity style={styles.featuredCard}>
           <Image
-            source={require('../../assets/icon.png')} // Replace with actual image source
+            source={require('../../assets/download.png')} // Replace with actual image source
             style={styles.featuredImage}
           />
           <View style={styles.featuredCardContent}>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   featuredImage: {
     width: '100%',
-    height: 150,
+    height: 250,
   },
   featuredCardContent: {
     padding: 10,
