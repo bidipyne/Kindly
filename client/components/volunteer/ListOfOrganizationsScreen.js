@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import OrganizationCard from './OrganizationCard'; // Import the OrganizationCard component
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -16,7 +16,7 @@ const ListOfOrganizationsScreen = () => {
       try {
 
         const response = await axios.get(host+'/organizations');
-        console.log(response.data);
+        console.log("Org :: "+JSON.stringify(response.data));
         setOrganizationsData(response.data.data);
       } catch (error) {
         console.log('Error fetching organizations data:', error);

@@ -25,7 +25,7 @@ const VolunteerSignupScreen = ({ navigation }) => {
   data.append('province', state); // Assuming state variable represents province
   data.append('city', city);
   data.append('address', ''); // Add address if necessary
-  data.append('name', '');
+  //data.append('name', '');
   data.append('charityNumber', '');
   data.append('contactInfo', '');
 

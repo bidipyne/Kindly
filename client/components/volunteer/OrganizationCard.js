@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Assuming you're using FontAwesome icons for rating
 
 import { host } from '../constants'
 import { getRandomMediumDarkColor } from '../api/helpers'
+import { useNavigation } from '@react-navigation/native';
 
 const OrganizationCard = ({ organization, onPress }) => {
   const [imageUrl, setImageUrl] = React.useState(`${host}/${organization?.profileImage}`);
@@ -11,6 +12,16 @@ const OrganizationCard = ({ organization, onPress }) => {
   const handleImageError = () => {
     setImageUrl(null);
   };
+
+  const navigation = useNavigation(); 
+
+  const onSeeProjects = () => {
+  if (!organization.projects || organization.projects.length === 0) {
+    Alert.alert('No Projects', 'No projects added for this organization.');
+  } else {
+    navigation.navigate('ListOfProjectsScreen', { organization });
+  }
+};
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
@@ -36,10 +47,10 @@ const OrganizationCard = ({ organization, onPress }) => {
           <Icon name="star" size={16} color="#FFD700" />
           <Icon name="star" size={16} color="#FFD700" />
         </View>
-        </View>
-        <TouchableOpacity style={styles.seeProjects}>
+        <TouchableOpacity style={styles.seeProjects} onPress={onSeeProjects}>
           <Text style={styles.seeProjectsText}>See Projects</Text>
         </TouchableOpacity>
+      </View>
       </View>
     </TouchableOpacity>
   );

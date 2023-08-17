@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -47,6 +48,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialScreen}
         screenOptions={({ route }) => ({
+          headerTitleStyle: styles.headerTitle,
           headerRight: () => (routesToHideHeaderRight.includes(route.name) ? null : <GlobalHeaderRight />)
         })}
       >
@@ -54,13 +56,13 @@ function App() {
           title: "Kindly"
         }} component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" options={{
-          title: "Login"
+          title: "Kindly"
         }} component={LoginScreen} />
         <Stack.Screen name="ProjectForm" options={{
           title: "Project"
         }} component={ProjectForm} />
         <Stack.Screen name="ReviewScreen" options={{
-          title: "Review"
+          title: "Leave Review"
         }} component={ReviewScreen} />
         <Stack.Screen name="VolunteerSignup" options={{
           title: "Volunteer Signup"
@@ -96,5 +98,12 @@ function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    color: '#007BFF', // Blue color
+    // You can also add more styles here if needed
+  },
+});
 
 export default App;

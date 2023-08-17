@@ -2,6 +2,7 @@ import { host } from '../constants';
 
 export async function getOrganizationProjects(orgId) {
   try {
+    console.log("orgId :"+orgId);
     let response = await fetch(`${host}/organizations/${orgId}`);
 
     if (!response.ok) {

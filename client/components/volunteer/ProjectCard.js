@@ -8,9 +8,10 @@ import { getRandomMediumDarkColor } from '../api/helpers';
 
 const ProjectCard = ({ project }) => {
   const [organizationName, setOrganizationName] = useState('');
+  const [averageRating, setAverageRating] = useState('N/A');
   const navigation = useNavigation();
 
-  const [imageUrl, setImageUrl] = React.useState(`${project?.fullProfileImageUrl}`);
+  const [imageUrl, setImageUrl] = React.useState(`${project?.profileImage}`);
 
   const handleImageError = () => {
     setImageUrl(null);
@@ -25,8 +26,8 @@ const ProjectCard = ({ project }) => {
     const fetchOrganization = async () => {
       try {
         const response = await axios.get(host + `/organizations/${project.organizationId}`);
-
-        setOrganizationName(response?.data?.data?.name);
+        setOrganizationName(response.data.data.name);
+        calculateAverageRating(response.data.data.reviews); // Calculate average rating
       } catch (error) {
         console.log('Error fetching organization:', error);
       }
@@ -34,11 +35,25 @@ const ProjectCard = ({ project }) => {
     fetchOrganization();
   }, [project.organizationId]);
 
+    const calculateAverageRating = (reviews) => {
+      if (!reviews || reviews.length === 0) {
+        setAverageRating('N/A');
+        return;
+      }
+
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = totalRating / reviews.length;
+
+      // Ensure averageRating is a positive integer or return 0 if it's not valid
+      const finalAverageRating = isNaN(averageRating) || averageRating <= 0 ? 0 : Math.floor(averageRating);
+      setAverageRating(finalAverageRating);
+    };
+
   return (
     <View style={styles.card}>
       {imageUrl ? (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: host+'/'+imageUrl }}
           style={styles.projectImage}
           onError={handleImageError}
         />
@@ -50,7 +65,7 @@ const ProjectCard = ({ project }) => {
       )}
       <View style={styles.cardContent}>
         <Text style={styles.projectName}>{project.title}</Text>
-        <Text style={styles.organisation}>{organizationName}</Text>
+        <Text style={styles.organisation}>By: {organizationName}</Text>
         {/* Add Rating Component Here */}
         <View style={styles.rating}>
           <Icon name="star" size={16} color="#FFD700" />
