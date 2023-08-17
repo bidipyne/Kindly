@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.welcomeTextWrapper}>
+        <Image source={require('../assets/logo.png')}
+          style={styles.logo}
+        />
         <Text style={styles.welcomeText}>Welcome!</Text>
         <Text style={styles.welcomeText}>Let's get started</Text>
       </View>
@@ -28,7 +31,7 @@ const WelcomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     padding: 16,
     backgroundColor: '#F5FCFF',
   },
@@ -63,6 +66,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20
   },
+  logo: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+  }
 });
 
 export default WelcomeScreen;
