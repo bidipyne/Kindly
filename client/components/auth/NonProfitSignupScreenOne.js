@@ -9,6 +9,10 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
   const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
 
+  const areFieldsFilled = () => {
+    return organisationName !== '' && charityNumber !== '' && email !== '' && password !== '';
+  };
+
   return (
     <ScrollView keyboardShouldPersistTaps='handled'>
     <View style={styles.container}>
@@ -57,14 +61,22 @@ const NonProfitSignupScreenOne = ({ navigation }) => {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NonProfitSignupScreenTwo', {
-        organisationName,
-        charityNumber,
-        email,
-        state,
-        city,
-        password,
-      })}>
+      <TouchableOpacity
+        style={[styles.button, !areFieldsFilled() && styles.disabledButton]}
+        onPress={() => {
+          if (areFieldsFilled()) {
+            navigation.navigate('NonProfitSignupScreenTwo', {
+              organisationName,
+              charityNumber,
+              email,
+              state,
+              city,
+              password,
+            });
+          }
+        }}
+        disabled={!areFieldsFilled()}
+      >
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
@@ -125,6 +137,9 @@ const styles = StyleSheet.create({
     bottom: 450,
     left: 0,
     right: 0,
+  },
+  disabledButton: {
+    backgroundColor: '#B1B1B1',
   },
 });
 

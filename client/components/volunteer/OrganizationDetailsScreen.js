@@ -19,6 +19,7 @@ const OrganizationDetailsScreen = ({ route }) => {
 
   // Fetch user data for all userIds in reviews when the component mounts
   useEffect(() => {
+    console.log("Org details "+JSON.stringify(organization))
     const userIds = organization.reviews.map(review => review.userId);
     const config = {
       method: 'get',
@@ -75,9 +76,7 @@ const OrganizationDetailsScreen = ({ route }) => {
       </View>
       {/* Organization Image */}
       <View style={styles.orgImageContainer}>
-        <Image source={{
-          uri: `${host}/${organization.profileImage}`
-        }} style={styles.orgImage} />
+        <Image source={ host+'/'+organization.profileImage} style={styles.orgImage} />
       </View>
       {/* About Us */}
       <Text style={styles.sectionTitle}>About Us</Text>

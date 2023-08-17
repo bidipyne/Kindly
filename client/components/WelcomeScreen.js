@@ -18,11 +18,14 @@ const WelcomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('VolunteerSignup')}>
         <Text style={styles.buttonText}>Volunteer / Donate</Text>
       </TouchableOpacity>
-      <Text
-        style={styles.loginLink}
-        onPress={() => navigation.navigate('LoginScreen')}
-      >
-        Already have an account? Login
+      <Text style={styles.loginLink}>
+        Already have an account?{' '}
+        <Text
+          style={styles.loginLinkText}
+          onPress={() => navigation.navigate('LoginScreen')}
+        >
+          Login
+        </Text>
       </Text>
     </View>
   );
@@ -64,6 +67,10 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     marginTop: 20
+  },
+  loginLinkText: {
+    color: '#009CE0',
+    textDecorationLine: 'underline',
   },
   logo: {
     marginHorizontal: 20,
