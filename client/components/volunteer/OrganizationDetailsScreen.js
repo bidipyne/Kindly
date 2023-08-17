@@ -11,15 +11,12 @@ const OrganizationDetailsScreen = ({ route }) => {
   const { organization } = route.params;
   const [userEmails, setUserEmails] = useState({});
   const [curUserId, setCurUserId] = useState('');
+  console.log("Org details "+JSON.stringify(organization))
   
   const fetchUser = async () => {
     let userId = await AsyncStorage.getItem('userId');
     setCurUserId(userId)
   }
-
-  React.useEffect(() => {
-    fetchUser();
-  }, []);
 
   const handleLeaveReview = () => {
    
@@ -32,7 +29,9 @@ const OrganizationDetailsScreen = ({ route }) => {
 
   // Fetch user data for all userIds in reviews when the component mounts
   useEffect(() => {
-    console.log("Org details "+JSON.stringify(organization))
+
+    fetchUser();
+    
     const userIds = organization.reviews.map(review => review.userId);
     const config = {
       method: 'get',
@@ -60,7 +59,7 @@ const OrganizationDetailsScreen = ({ route }) => {
   }, []);
 
   const calculateAverageRating = () => {
-    if (!organization.reviews || organization.reviews.length === 0) {
+    if (!organization?.reviews || organization?.reviews?.length === 0) {
       return 'N/A';
     }
 
