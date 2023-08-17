@@ -47,7 +47,7 @@ const OrganizationCard = ({ organization, onPress }) => {
           <Icon name="star" size={16} color="#FFD700" />
           <Icon name="star" size={16} color="#FFD700" />
         </View>
-        <TouchableOpacity style={styles.seeProjects}>
+        <TouchableOpacity style={styles.seeProjects} onPress={onSeeProjects}>
           <Text style={styles.seeProjectsText}>See Projects</Text>
         </TouchableOpacity>
       </View>

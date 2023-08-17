@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import OrganizationCard from './OrganizationCard'; // Import the OrganizationCard component
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
