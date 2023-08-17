@@ -67,9 +67,9 @@ const HeaderIcon = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profile} onPress={toggleTooltip}>
-        {user?.fullProfileImageUrl ? (
+        {user?.profileImage ? (
           <Image
-            source={{ uri: user?.fullProfileImageUrl }}
+            source={{ uri: host+"/"+user?.profileImage }}
             style={styles.image}
           />
         ) : (

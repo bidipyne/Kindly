@@ -11,7 +11,7 @@ const ProjectCard = ({ project }) => {
   const [averageRating, setAverageRating] = useState('N/A');
   const navigation = useNavigation();
 
-  const [imageUrl, setImageUrl] = React.useState(`${project?.fullProfileImageUrl}`);
+  const [imageUrl, setImageUrl] = React.useState(`${project?.profileImage}`);
 
   const handleImageError = () => {
     setImageUrl(null);
@@ -53,7 +53,7 @@ const ProjectCard = ({ project }) => {
     <View style={styles.card}>
       {imageUrl ? (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: host+'/'+imageUrl }}
           style={styles.projectImage}
           onError={handleImageError}
         />
