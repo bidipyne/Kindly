@@ -42,7 +42,7 @@ const ProjectForm = ({ navigation, route }) => {
           setLocation(projectData.location);
           setContactInfo(projectData.contactInfo);
           setWeNeed(projectData.lookingFor);
-          setLogo(projectData.fullProfileImageUrl);
+          setLogo(`${host}/${projectData.profileImage}`);
 
           // Any other necessary state updates...
         })

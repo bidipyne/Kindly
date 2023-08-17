@@ -26,23 +26,23 @@ const LoginScreen = ({ navigation }) => {
       data: data,
     };
 
+    // console.log(';;', config)
+
     axios.request(config)
       .then(async (response) => {
         console.log(JSON.stringify(response.data));
 
         let user = response?.data?.data;
 
-        console.log("User "+JSON.stringify(user, null, 2));
         await AsyncStorage.setItem('userId', user._id);
         await AsyncStorage.setItem('userType', user.userType);
-        
+
         if (user.userType == 'volunteer') {
           navigation.navigate('VolunteerWelcomeScreen');
         } else if (user.userType == 'organization') {
           navigation.navigate('OrganizationWelcomeScreen');
         }
 
-        
 
         // You can handle the response here, for example, by redirecting to another screen
       })
