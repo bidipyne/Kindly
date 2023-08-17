@@ -52,7 +52,7 @@ const VolunteerSignupScreen = ({ navigation }) => {
     .then((response) => {
       console.log(JSON.stringify(response.data));
       // You can handle the response here, for example, by redirecting to another screen
-      navigation.navigate('VolunteerWelcomeScreen');
+      navigation.navigate('LoginScreen');
     })
     .catch((error) => {
       console.log(error);

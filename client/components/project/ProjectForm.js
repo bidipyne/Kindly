@@ -80,7 +80,7 @@ const ProjectForm = ({ navigation, route }) => {
       let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `${host}/projects/${projectId}`,
+        url: host+'/projects/'+projectId,
         headers: {
           'userid': userId,
         },
@@ -100,7 +100,7 @@ const ProjectForm = ({ navigation, route }) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `${host}/projects`,
+        url: host+'/projects',
         headers: {
           'userid': userId,
         },

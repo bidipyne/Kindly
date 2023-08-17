@@ -43,7 +43,7 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         // You can handle the response here, for example, by redirecting to another screen
-        navigation.navigate('OrganizationWelcomeScreen'); // Update the screen name as needed
+        navigation.navigate('LoginScreen'); // Update the screen name as needed
       })
       .catch((error) => {
         console.log("Axios error from organization sign up: ", error.response.data);
@@ -61,9 +61,7 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setLogo(result.uri);
     }
   };
@@ -73,11 +71,12 @@ const NonProfitSignupScreenTwo = ({ navigation, route }) => {
       <Text style={styles.title}>Submit your logo</Text>
 
       <TouchableOpacity onPress={pickImage} style={styles.imageUpload}>
-        <Text style={styles.label}>Click here to upload</Text>
-        <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
-      </TouchableOpacity>
-
-      {logo && <Image source={{ uri: logo }} style={styles.logo} />}
+            {logo && (
+              <Image source={{ uri: logo }} style={styles.image} />
+            )}
+            <Text style={styles.label}>Add image &nbsp;</Text>
+            <Icon name="images" size={30} color="#000" style={styles.imageIcon} />
+          </TouchableOpacity>
 
       <Text style={styles.label}>About Us</Text>
       <TextInput
@@ -176,6 +175,12 @@ const styles = StyleSheet.create({
   },
   imageIcon: {
     marginLeft: 10, // Add some space between the text and the icon
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginRight: 20,
+    borderRadius: 5
   },
 });
 
