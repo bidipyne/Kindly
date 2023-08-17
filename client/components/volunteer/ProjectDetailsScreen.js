@@ -55,7 +55,7 @@ const ProjectDetailsScreen = () => {
       <Text style={styles.subTitle}>Project Name: {project.title}</Text>
       <Text style={styles.subTitle}>By: {organizationName}</Text>
       <Image
-        source={{ uri: organizationProfileImage }} // Use the fetched profile image URL
+        source={{ uri: host+'/'+project.profileImage }} // Use the fetched profile image URL
         style={styles.projectImage}
       />
       <View style={styles.section}>
