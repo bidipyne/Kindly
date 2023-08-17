@@ -44,7 +44,7 @@ const AccountDetailsScreen = ({ navigation, route }) => {
       setStateProvince(data.province);
       setCity(data.city);
       setUserType(data.userType);
-      setFullProfileImageUrl(data.fullProfileImageUrl)
+      setFullProfileImageUrl(host+"/"+data.profileImage)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -73,7 +73,7 @@ const AccountDetailsScreen = ({ navigation, route }) => {
         type: `image/${fileType}`,
       });
     }
-
+    console.log("data "+ JSON.stringify(data, null, 2));
     let config = {
       method: 'put',
       maxBodyLength: Infinity,
@@ -84,10 +84,11 @@ const AccountDetailsScreen = ({ navigation, route }) => {
     axios
       .request(config)
       .then((response) => {
+        console.log("response "+ JSON.stringify(response, null, 2));
         navigation.goBack();
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error "+error);
       });
   };
 

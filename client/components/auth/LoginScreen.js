@@ -32,15 +32,17 @@ const LoginScreen = ({ navigation }) => {
 
         let user = response?.data?.data;
 
-        console.log(user.userType);
+        console.log("User "+JSON.stringify(user, null, 2));
+        await AsyncStorage.setItem('userId', user._id);
+        await AsyncStorage.setItem('userType', user.userType);
+        
         if (user.userType == 'volunteer') {
           navigation.navigate('VolunteerWelcomeScreen');
         } else if (user.userType == 'organization') {
           navigation.navigate('OrganizationWelcomeScreen');
         }
 
-        await AsyncStorage.setItem('userId', user._id);
-        await AsyncStorage.setItem('userType', user.userType);
+        
 
         // You can handle the response here, for example, by redirecting to another screen
       })
@@ -73,7 +75,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.createAccountLink}
         onPress={() => navigation.navigate('Welcome')}
       >
-        Or create an account
+        Or, create an account?
       </Text>
     </View>
   );
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     position: 'absolute',
-    bottom: 450,
+    bottom: 400,
     left: 0,
     right: 0,
   },

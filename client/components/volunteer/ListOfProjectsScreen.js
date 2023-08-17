@@ -4,40 +4,45 @@ import axios from 'axios';
 import ProjectCard from './ProjectCard'; // Import the ProjectCard component
 import { host } from '../constants';
 
-const ListOfProjectsScreen = () => {
+const ListOfProjectsScreen = (route) => {
+  const { organization } = route.params || {}; // Use empty object if organization is not provided
   const [projectsData, setProjectsData] = useState([]);
 
   useEffect(() => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: host+'/projects',
-      headers: {},
-    };
+    
+    if (organization && organization.projects && organization.projects.length > 0) {
+      // Fetch projects associated with the organization
+      setProjectsData(organization.projects);
+    } else {
+      // Fetch all projects
+      fetchAllProjects();
+    }
+  }, [organization]);
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setProjectsData(response.data.data); // Assuming response.data is an array of projects
-      })
-      .catch((error) => {
-        console.log(error);
-        // Optionally, handle the error here, perhaps by setting some error state
-      });
-  }, []); // The empty array means this effect will run once after the initial render
+  const fetchAllProjects = async () => {
+    try {
+      const response = await axios.get(host + '/projects');
+      setProjectsData(response.data.data);
+    } catch (error) {
+      console.log('Error fetching projects:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Our Projects</Text>
-      <FlatList
-        data={projectsData}
-        keyExtractor={(item) => item.id.toString()} // Assuming the id is a number
-        renderItem={({ item }) => (
-          <ProjectCard
-            project={item} />
-        )}
-      />
+      {projectsData.length > 0 ? (
+        <FlatList
+          data={projectsData}
+          keyExtractor={(item) => item.id.toString()} // Assuming the id is a number
+          renderItem={({ item }) => (
+            <ProjectCard
+              project={item} />
+          )}
+        />
+      ) : (
+        <Text style={styles.noProjectsText}>No projects added for this organization.</Text>
+      )}
     </View>
   );
 };
@@ -55,6 +60,12 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
     marginVertical: 30,
+  },
+  noProjectsText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 

@@ -67,14 +67,14 @@ const HeaderIcon = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profile} onPress={toggleTooltip}>
-        {user?.fullProfileImageUrl ? (
+        {user?.profileImage ? (
           <Image
-            source={{ uri: user?.fullProfileImageUrl }}
+            source={{ uri: host+"/"+user?.profileImage }}
             style={styles.image}
           />
         ) : (
           <Text style={styles.initials}>
-            {(user.name || user.fullName)?.substring(0, 2)?.toUpperCase()}
+            {(user?.name || user?.fullName)?.substring(0, 2)?.toUpperCase()}
           </Text>
         )}
       </TouchableOpacity>

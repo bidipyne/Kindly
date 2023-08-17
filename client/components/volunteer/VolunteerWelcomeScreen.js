@@ -7,7 +7,7 @@ const VolunteerWelcomeScreen = () => {
   const navigation = useNavigation();
 
   const handleProjectsPress = () => {
-    navigation.navigate('ListOfProjectsScreen'); // Replace with the actual screen name for ListOfProjects
+    navigation.navigate('ListOfProjectsScreen', { showOrgProjects: false });
   };
 
   const handleOrganizationsPress = () => {
