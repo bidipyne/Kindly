@@ -112,7 +112,8 @@ static async reviewOrganization(req, res, next) {
     await organization.save();
 
     return res.json({
-      message: 'Review added/updated.'
+      message: 'Review added/updated.',
+      organization: organization
     });
   } catch (error) {
     res.status(500).json({

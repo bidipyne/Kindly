@@ -26,7 +26,6 @@ const ReviewScreen = () => {
     } else {
       var myHeaders = new Headers();
       myHeaders.append("userid", userId);
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
       var urlencoded = new URLSearchParams();
       urlencoded.append("rating", rating);
@@ -39,16 +38,21 @@ const ReviewScreen = () => {
         redirect: 'follow'
       };
 
-      fetch(`${host}/organizations/${organizationId}/review`, requestOptions)
+      console.log("UserId passed "+ userId);
+      console.log("organizationId passed "+ organizationId);
+
+      fetch(host+"/organizations/"+organizationId+"/review", requestOptions)
         .then(response => response.text())
         .then(result => {
-          console.log(result);
+          console.log("result" + result);
           Alert.alert('Success', 'Your review has been posted');
-          navigation.navigate('OrganizationDetailsScreen', { organization: item });
         })
-        .catch(error => {
-          console.log('Error posting review:', error);
-        });
+        .catch(error => console.log('error', error));
+
+
+
+      
+
     }
   };
 

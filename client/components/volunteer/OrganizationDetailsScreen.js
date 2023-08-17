@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Assuming you're using FontAwesome icons for rating
 import { useNavigation } from '@react-navigation/native';
 import { host } from '../constants';
@@ -9,11 +10,23 @@ const OrganizationDetailsScreen = ({ route }) => {
   const navigation = useNavigation();
   const { organization } = route.params;
   const [userEmails, setUserEmails] = useState({});
+  const [curUserId, setCurUserId] = useState('');
+  
+  const fetchUser = async () => {
+    let userId = await AsyncStorage.getItem('userId');
+    setCurUserId(userId)
+  }
+
+  React.useEffect(() => {
+    fetchUser();
+  }, []);
 
   const handleLeaveReview = () => {
+   
+   console.log("userId "+JSON.stringify(curUserId));
    navigation.navigate('ReviewScreen', {
     organizationId: organization._id, // Pass organization._id
-    userId: '64d40f4ebbf17628e207d48e', // Pass the logged-in user id
+    userId: curUserId, // Pass the logged-in user id
   });
   };
 
@@ -76,7 +89,7 @@ const OrganizationDetailsScreen = ({ route }) => {
       </View>
       {/* Organization Image */}
       <View style={styles.orgImageContainer}>
-        <Image source={ host+'/'+organization.profileImage} style={styles.orgImage} />
+        <Image source={{ uri:  host+'/'+organization.profileImage}} style={styles.orgImage} />
       </View>
       {/* About Us */}
       <Text style={styles.sectionTitle}>About Us</Text>
