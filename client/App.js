@@ -56,7 +56,7 @@ function App() {
           title: "Kindly"
         }} component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" options={{
-          title: "Kindly"
+          title: "Login"
         }} component={LoginScreen} />
         <Stack.Screen name="ProjectForm" options={{
           title: "Project"

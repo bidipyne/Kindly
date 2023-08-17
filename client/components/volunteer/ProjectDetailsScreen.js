@@ -18,14 +18,14 @@ const ProjectDetailsScreen = () => {
   const [organizationProfileImage, setOrganizationProfileImage] = useState(null);
   const [organizationContact, setOrganizationContact] = useState('');
   const [organizationLocation, setOrganizationLocation] = useState('');
-  
+
   useEffect(() => {
     // Fetch organization data based on project.organizationId
     const fetchOrganization = async () => {
       try {
         const response = await axios.get(host+`/organizations/${project.organizationId}`);
         setOrganizationName(response.data.data.name);
-        setOrganizationProfileImage(response.data.data.profileImage);
+        setOrganizationProfileImage(`${host}/${response?.data?.data?.profileImage}`);
         setOrganizationContact(response.data.data.contactInfo);
         setOrganizationLocation(response.data.data.city+", "+response.data.data.province);
       } catch (error) {
@@ -94,6 +94,8 @@ const ProjectDetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 30,
     backgroundColor: '#FFFFFF',
   },
   title: {
@@ -102,20 +104,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subTitle: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#000000',
-    marginBottom: 5,
+    marginTop: 20,
   },
   projectImage: {
     width: '100%',
-    height: 200,
+    height: 300,
     resizeMode: 'cover',
-    marginBottom: 10,
+    marginVertical: 20,
   },
   text: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#000000',
-    marginBottom: 5,
+    marginVertical: 10,
   },
   buttonVolunteer: {
     backgroundColor: '#009CE0',
@@ -138,8 +140,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 29,
-    fontWeight: 'regular',
+    fontSize: 26,
+    fontWeight: '500',
     color: '#009CE0',
   },
 });

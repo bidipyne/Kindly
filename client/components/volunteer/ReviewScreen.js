@@ -55,7 +55,7 @@ const ReviewScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Leave a Review</Text>
-      <Text style={styles.label}>Description</Text>
+      <Text style={{...styles.label, marginTop: 30}}>Description</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setFeedback(text)}
@@ -82,19 +82,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingHorizontal: 30,
+    paddingVertical: 30,
     backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 30,
     color: '#000000',
     fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
-    marginLeft: 20,
     marginTop: 2,
   },
   label: {
     fontSize: 16,
-    marginLeft: 5,
     marginTop: 10,
+    marginBottom: 10,
     color: '#000000',
   },
   input: {
@@ -113,14 +114,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    margin: 10,
     padding: 10,
+    marginVertical: 20,
+    width: '100%',
+    justifyContent: 'center',
     backgroundColor: '#009CE0',
     borderRadius: 5,
     height: 55,
   },
   buttonText: {
     fontSize: 20,
+    fontWeight: '600',
     color: '#FFF',
     textAlign: 'center',
   },

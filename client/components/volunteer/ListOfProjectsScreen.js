@@ -9,7 +9,7 @@ const ListOfProjectsScreen = (route) => {
   const [projectsData, setProjectsData] = useState([]);
 
   useEffect(() => {
-    
+
     if (organization && organization.projects && organization.projects.length > 0) {
       // Fetch projects associated with the organization
       setProjectsData(organization.projects);
@@ -37,6 +37,7 @@ const ListOfProjectsScreen = (route) => {
           keyExtractor={(item) => item.id.toString()} // Assuming the id is a number
           renderItem={({ item }) => (
             <ProjectCard
+              key={item._id}
               project={item} />
           )}
         />

@@ -34,6 +34,7 @@ const ListOfOrganizationsScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <OrganizationCard
+            key={item._id}
             organization={item}
             onPress={() => {
               console.log('Item pressed', item); // Logging the item
